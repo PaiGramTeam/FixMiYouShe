@@ -1,3 +1,5 @@
+from typing import List
+
 from .hyperionrequest import HyperionRequest
 from .models import PostInfo
 from ..typedefs import JSON_DATA
@@ -12,6 +14,7 @@ class Hyperion:
     """
 
     POST_FULL_URL = "https://bbs-api.miyoushe.com/post/wapi/getPostFull"
+    POST_SEM_URL = "https://bbs-api.miyoushe.com/post/wapi/semPosts"
     POST_FULL_IN_COLLECTION_URL = (
         "https://bbs-api.miyoushe.com/post/wapi/getPostFullInCollection"
     )
@@ -84,6 +87,13 @@ class Hyperion:
         params = {"gids": gids, "post_id": post_id, "read": read}
         response = await self.client.get(self.POST_FULL_URL, params=params)
         return PostInfo.paste_data(response)
+
+    async def get_same_posts(self, gids: int, post_id: int) -> List[PostInfo]:
+        params = {"gids": gids, "post_id": post_id}
+        response = await self.client.get(self.POST_SEM_URL, params=params)
+        return [
+            PostInfo.paste_data(**{"data": {"post": post}}) for post in response["list"]
+        ]
 
     async def get_new_list(self, gids: int, type_id: int, page_size: int = 20):
         """

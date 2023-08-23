@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup, Tag, PageElement
 from src import template_env
 from src.api.hyperion import Hyperion
 from src.api.models import PostStat, PostInfo, PostType
-from src.env import DEBUG
+from src.env import DEBUG, DOMAIN
 from src.error import ArticleNotFoundError
 from src.services.cache import (
     get_article_cache_file_path,
@@ -99,7 +99,9 @@ def parse_stat(stat: PostStat):
     )
 
 
-def get_public_data(game_id: str, post_id: int, post_info: PostInfo) -> Dict:
+def get_public_data(
+    game_id: str, post_id: int, post_info: PostInfo, post_sam_info: List[PostInfo]
+) -> Dict:
     cover = post_info.cover
     if (not post_info.cover) and post_info.image_urls:
         cover = post_info.image_urls[0]
@@ -114,19 +116,25 @@ def get_public_data(game_id: str, post_id: int, post_info: PostInfo) -> Dict:
         "cover": cover,
         "post": post_info,
         "author": post_info["post"]["user"],
+        "related_posts": post_sam_info,
+        "DOMAIN": DOMAIN,
     }
 
 
-async def process_article_text(game_id: str, post_id: int, post_info: PostInfo) -> str:
+async def process_article_text(
+    game_id: str, post_id: int, post_info: PostInfo, post_sam_info: List[PostInfo]
+) -> str:
     post_soup = BeautifulSoup(post_info.content, features="lxml")
     return template.render(
         description=get_description(post_soup),
         article=parse_content(post_soup, post_info.subject, post_info.video_urls),
-        **get_public_data(game_id, post_id, post_info),
+        **get_public_data(game_id, post_id, post_info, post_sam_info),
     )
 
 
-async def process_article_image(game_id: str, post_id: int, post_info: PostInfo) -> str:
+async def process_article_image(
+    game_id: str, post_id: int, post_info: PostInfo, post_sam_info: List[PostInfo]
+) -> str:
     json_data = json.loads(post_info.content)
     description = json_data.get("describe", "")
     article = ""
@@ -137,7 +145,7 @@ async def process_article_image(game_id: str, post_id: int, post_info: PostInfo)
     return template.render(
         description=description,
         article=article,
-        **get_public_data(game_id, post_id, post_info),
+        **get_public_data(game_id, post_id, post_info, post_sam_info),
     )
 
 
@@ -151,12 +159,15 @@ async def process_article(game_id: str, post_id: int) -> str:
     hyperion = Hyperion()
     try:
         post_info = await hyperion.get_post_info(gids=gids, post_id=post_id)
+        post_sam_info = await hyperion.get_same_posts(gids=gids, post_id=post_id)
     finally:
         await hyperion.close()
     if post_info.view_type in [PostType.TEXT, PostType.VIDEO]:
-        content = await process_article_text(game_id, post_id, post_info)
+        content = await process_article_text(game_id, post_id, post_info, post_sam_info)
     elif post_info.view_type == PostType.IMAGE:
-        content = await process_article_image(game_id, post_id, post_info)
+        content = await process_article_image(
+            game_id, post_id, post_info, post_sam_info
+        )
     if not DEBUG:
         await write_article_cache_file(path, content)
         add_delete_file_job(path)
