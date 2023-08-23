@@ -1,22 +1,19 @@
 import json
 from datetime import datetime
-from typing import Union, List, Dict
+from typing import Union, List, Dict, Optional
 
 from bs4 import BeautifulSoup, Tag, PageElement
 
 from src import template_env
 from src.api.hyperion import Hyperion
-from src.api.models import PostStat, PostInfo, PostType
-from src.env import DEBUG, DOMAIN
+from src.api.models import PostStat, PostInfo, PostType, PostRecommend
+from src.env import DOMAIN
 from src.error import ArticleNotFoundError
-from src.services.cache import (
-    get_article_cache_file_path,
-    get_article_cache_file,
-    write_article_cache_file,
-)
-from src.services.scheduler import add_delete_file_job
+from src.log import logger
+from src.services.scheduler import scheduler
 
 GAME_ID_MAP = {"bh3": 1, "ys": 2, "bh2": 3, "wd": 4, "dby": 5, "sr": 6, "zzz": 8}
+RECOMMEND_POST_MAP: Dict[str, List[PostRecommend]] = {}
 CHANNEL_MAP = {"ys": "yuanshen", "sr": "HSRCN", "zzz": "ZZZNewsletter"}
 template = template_env.get_template("article.jinja2")
 
@@ -99,9 +96,14 @@ def parse_stat(stat: PostStat):
     )
 
 
-def get_public_data(
-    game_id: str, post_id: int, post_info: PostInfo, post_sam_info: List[PostInfo]
-) -> Dict:
+def get_recommend_post(game_id: str, post_id: Optional[int]) -> List[PostRecommend]:
+    posts = RECOMMEND_POST_MAP.get(game_id, [])
+    if post_id:
+        return [post for post in posts if post.post_id != post_id]
+    return posts
+
+
+def get_public_data(game_id: str, post_id: int, post_info: PostInfo) -> Dict:
     cover = post_info.cover
     if (not post_info.cover) and post_info.image_urls:
         cover = post_info.image_urls[0]
@@ -116,25 +118,21 @@ def get_public_data(
         "cover": cover,
         "post": post_info,
         "author": post_info["post"]["user"],
-        "related_posts": post_sam_info,
+        "related_posts": get_recommend_post(game_id, post_id),
         "DOMAIN": DOMAIN,
     }
 
 
-async def process_article_text(
-    game_id: str, post_id: int, post_info: PostInfo, post_sam_info: List[PostInfo]
-) -> str:
+async def process_article_text(game_id: str, post_id: int, post_info: PostInfo) -> str:
     post_soup = BeautifulSoup(post_info.content, features="lxml")
     return template.render(
         description=get_description(post_soup),
         article=parse_content(post_soup, post_info.subject, post_info.video_urls),
-        **get_public_data(game_id, post_id, post_info, post_sam_info),
+        **get_public_data(game_id, post_id, post_info),
     )
 
 
-async def process_article_image(
-    game_id: str, post_id: int, post_info: PostInfo, post_sam_info: List[PostInfo]
-) -> str:
+async def process_article_image(game_id: str, post_id: int, post_info: PostInfo) -> str:
     json_data = json.loads(post_info.content)
     description = json_data.get("describe", "")
     article = ""
@@ -145,30 +143,38 @@ async def process_article_image(
     return template.render(
         description=description,
         article=article,
-        **get_public_data(game_id, post_id, post_info, post_sam_info),
+        **get_public_data(game_id, post_id, post_info),
     )
 
 
 async def process_article(game_id: str, post_id: int) -> str:
-    path = get_article_cache_file_path(game_id, post_id)
-    if content := await get_article_cache_file(path):
-        return content
     gids = GAME_ID_MAP.get(game_id)
     if not gids:
         raise ArticleNotFoundError(game_id, post_id)
     hyperion = Hyperion()
     try:
         post_info = await hyperion.get_post_info(gids=gids, post_id=post_id)
-        post_sam_info = await hyperion.get_same_posts(gids=gids, post_id=post_id)
     finally:
         await hyperion.close()
     if post_info.view_type in [PostType.TEXT, PostType.VIDEO]:
-        content = await process_article_text(game_id, post_id, post_info, post_sam_info)
+        content = await process_article_text(game_id, post_id, post_info)
     elif post_info.view_type == PostType.IMAGE:
-        content = await process_article_image(
-            game_id, post_id, post_info, post_sam_info
-        )
-    if not DEBUG:
-        await write_article_cache_file(path, content)
-        add_delete_file_job(path)
-    return content
+        content = await process_article_image(game_id, post_id, post_info)
+    return content  # noqa
+
+
+@scheduler.scheduled_job("cron", minute="0", second="10")
+async def refresh_recommend_posts():
+    logger.info("Start to refresh recommend posts")
+    hyperion = Hyperion()
+    try:
+        for key, gids in GAME_ID_MAP.items():
+            try:
+                RECOMMEND_POST_MAP[key] = await hyperion.get_official_recommended_posts(
+                    gids
+                )
+            except Exception as _:
+                logger.exception(f"Failed to get recommend posts gids={gids}")
+    finally:
+        await hyperion.close()
+    logger.info("Finish to refresh recommend posts")

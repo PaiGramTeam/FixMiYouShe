@@ -71,8 +71,9 @@ Embed MiYouShe posts, videos, polls, and more on Telegram
     {% if related_posts %}
     {% for post in related_posts %}
     <related>
-        <a href="https://{{ DOMAIN }}/{{ game_id }}/article/{{ post.post_id }}"></a>
+        <a href="https://{{ DOMAIN }}/{{ game_id }}/article/{{ post.post_id }}">{{ post.subject }}</a>
     </related>
+    <br/>
     {% endfor %}
     {% endif %}
 </article>

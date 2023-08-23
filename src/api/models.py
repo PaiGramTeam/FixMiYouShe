@@ -7,6 +7,7 @@ __all__ = (
     "PostStat",
     "PostType",
     "PostInfo",
+    "PostRecommend",
 )
 
 
@@ -84,3 +85,10 @@ class PostInfo(BaseModel):
 
     def __getitem__(self, item):
         return self._data[item]
+
+
+class PostRecommend(BaseModel):
+    post_id: int
+    subject: str
+    banner: Optional[str]
+    official_type: Optional[int]
