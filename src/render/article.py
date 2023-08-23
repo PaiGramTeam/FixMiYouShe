@@ -42,8 +42,8 @@ def get_description(soup: BeautifulSoup) -> str:
 
 def format_image_url(url: str) -> str:
     if url.endswith(".png") or url.endswith(".jpg"):
-        return f'<img src="{url}{Hyperion.get_images_params()}"/>'
-    return url
+        url += Hyperion.get_images_params()
+    return f'<img src="{url}"/>'
 
 
 def parse_tag(tag: Union[Tag, PageElement]) -> str:
@@ -100,6 +100,9 @@ def parse_stat(stat: PostStat):
 
 
 def get_public_data(game_id: str, post_id: int, post_info: PostInfo) -> Dict:
+    cover = post_info.cover
+    if (not post_info.cover) and post_info.image_urls:
+        cover = post_info.image_urls[0]
     return {
         "url": f"https://www.miyoushe.com/{game_id}/article/{post_id}",
         "published_time": datetime.fromtimestamp(post_info.created_at).strftime(
@@ -108,6 +111,7 @@ def get_public_data(game_id: str, post_id: int, post_info: PostInfo) -> Dict:
         "channel": CHANNEL_MAP.get(game_id, "HSRCN"),
         "stat": parse_stat(post_info.stat),
         "game_id": game_id,
+        "cover": cover,
         "post": post_info,
         "author": post_info["post"]["user"],
     }
