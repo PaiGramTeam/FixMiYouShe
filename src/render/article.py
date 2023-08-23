@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup, Tag, PageElement
 from src import template_env
 from src.api.hyperion import Hyperion
 from src.api.models import PostStat
+from src.env import DEBUG
 from src.error import ArticleNotFoundError
 from src.services.cache import (
     get_article_cache_file_path,
@@ -55,16 +56,14 @@ def parse_tag(tag: Union[Tag, PageElement]) -> str:
         for tag_ in tag.children:
             if text := parse_tag(tag_):
                 post_text.append(text)
-        return "\n".join(post_text)
+        return "<p>" + "\n".join(post_text) + "</p>"
     elif tag.name == "div":
         post_text = []
         for tag_ in tag.children:
             if text := parse_tag(tag_):
                 post_text.append(text)
         return "\n".join(post_text)
-    text = tag.get_text().strip()
-    if text:
-        return f"<p>{replace_br(text)}</p>"
+    return replace_br(tag.get_text().strip())
 
 
 def parse_content(soup: BeautifulSoup, title: str, video_urls: List[str]) -> str:
@@ -117,6 +116,7 @@ async def process_article(game_id: str, post_id: int) -> str:
         post=post_data,
         author=author_data,
     )
-    await write_article_cache_file(path, content)
-    add_delete_file_job(path)
+    if not DEBUG:
+        await write_article_cache_file(path, content)
+        add_delete_file_job(path)
     return content
