@@ -18,6 +18,11 @@ class PostStat(BaseModel):
     bookmark_num: int = 0
 
 
+class PostTopic(BaseModel):
+    id: int
+    name: str
+
+
 class PostType(int, Enum):
     """帖子类型"""
 
@@ -36,6 +41,7 @@ class PostInfo(BaseModel):
     video_urls: List[str]
     content: str
     cover: Optional[str]
+    topics: List[PostTopic]
     view_type: PostType
     stat: PostStat
 
@@ -58,6 +64,7 @@ class PostInfo(BaseModel):
         user_uid = user["uid"]  # 用户ID
         content = post["content"]
         cover = post["cover"]
+        topics = [PostTopic(**topic) for topic in _data_post["topics"]]
         view_type = PostType(post["view_type"])
         stat = PostStat(**_data_post["stat"])
         return PostInfo(
@@ -70,6 +77,7 @@ class PostInfo(BaseModel):
             created_at=created_at,
             content=content,
             cover=cover,
+            topics=topics,
             view_type=view_type,
             stat=stat,
         )

@@ -40,6 +40,12 @@ def get_description(soup: BeautifulSoup) -> str:
     return post_text
 
 
+def format_image_url(url: str) -> str:
+    if url.endswith(".png") or url.endswith(".jpg"):
+        return f'<img src="{url}{Hyperion.get_images_params()}"/>'
+    return url
+
+
 def parse_tag(tag: Union[Tag, PageElement]) -> str:
     if tag.name == "a":
         href = tag.get("href")
@@ -49,9 +55,8 @@ def parse_tag(tag: Union[Tag, PageElement]) -> str:
             return f'<a href="{href}">{tag.get_text()}</a>'
     elif tag.name == "img":
         src = tag.get("src")
-        # fix telegram fetch url failed
         if src and "upload-bbs.miyoushe.com" in src:
-            return str(tag)
+            return format_image_url(src)
         return ""
     elif tag.name == "p":
         t = tag.get_text()
@@ -102,6 +107,7 @@ def get_public_data(game_id: str, post_id: int, post_info: PostInfo) -> Dict:
         ),
         "channel": CHANNEL_MAP.get(game_id, "HSRCN"),
         "stat": parse_stat(post_info.stat),
+        "game_id": game_id,
         "post": post_info,
         "author": post_info["post"]["user"],
     }
@@ -121,7 +127,7 @@ async def process_article_image(game_id: str, post_id: int, post_info: PostInfo)
     description = json_data.get("describe", "")
     article = ""
     for image in json_data.get("imgs", []):
-        article += f'<img src="{image}"/>\n'
+        article += format_image_url(image)
     if description:
         article += f"<p>{description}</p>\n"
     return template.render(

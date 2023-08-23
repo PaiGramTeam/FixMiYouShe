@@ -51,7 +51,7 @@ class Hyperion:
         auto_orient: int = 0,
         interlace: int = 1,
         images_format: str = "jpg",
-    ):
+    ) -> str:
         """
         image/resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg
         :param resize: 图片大小
@@ -65,7 +65,7 @@ class Hyperion:
             f"image/resize,s_{resize}/quality,q_{quality}/auto-orient,"
             f"{auto_orient}/interlace,{interlace}/format,{images_format}"
         )
-        return {"x-oss-process": params}
+        return f"?x-oss-process={params}"
 
     async def get_post_full_in_collection(
         self, collection_id: int, gids: int = 2, order_type=1
