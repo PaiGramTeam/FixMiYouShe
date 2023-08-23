@@ -19,5 +19,5 @@ async def parse_article(game_id: str, post_id: int, request: Request):
         logger.warning(e.msg)
         return get_redirect_response(request)
     except Exception as _:
-        logger.exception("Failed to get article.")
+        logger.exception(f"Failed to get article {game_id} {post_id}")
         return get_redirect_response(request)

@@ -1,11 +1,12 @@
+import json
 from datetime import datetime
-from typing import Union, List
+from typing import Union, List, Dict
 
 from bs4 import BeautifulSoup, Tag, PageElement
 
 from src import template_env
 from src.api.hyperion import Hyperion
-from src.api.models import PostStat
+from src.api.models import PostStat, PostInfo, PostType
 from src.env import DEBUG
 from src.error import ArticleNotFoundError
 from src.services.cache import (
@@ -93,6 +94,43 @@ def parse_stat(stat: PostStat):
     )
 
 
+def get_public_data(game_id: str, post_id: int, post_info: PostInfo) -> Dict:
+    return {
+        "url": f"https://www.miyoushe.com/{game_id}/article/{post_id}",
+        "published_time": datetime.fromtimestamp(post_info.created_at).strftime(
+            "%Y-%m-%dT%H:%M:%S.%fZ"
+        ),
+        "channel": CHANNEL_MAP.get(game_id, "HSRCN"),
+        "stat": parse_stat(post_info.stat),
+        "post": post_info,
+        "author": post_info["post"]["user"],
+    }
+
+
+async def process_article_text(game_id: str, post_id: int, post_info: PostInfo) -> str:
+    post_soup = BeautifulSoup(post_info.content, features="lxml")
+    return template.render(
+        description=get_description(post_soup),
+        article=parse_content(post_soup, post_info.subject, post_info.video_urls),
+        **get_public_data(game_id, post_id, post_info),
+    )
+
+
+async def process_article_image(game_id: str, post_id: int, post_info: PostInfo) -> str:
+    json_data = json.loads(post_info.content)
+    description = json_data.get("describe", "")
+    article = ""
+    for image in json_data.get("imgs", []):
+        article += f'<img src="{image}"/>\n'
+    if description:
+        article += f"<p>{description}</p>\n"
+    return template.render(
+        description=description,
+        article=article,
+        **get_public_data(game_id, post_id, post_info),
+    )
+
+
 async def process_article(game_id: str, post_id: int) -> str:
     path = get_article_cache_file_path(game_id, post_id)
     if content := await get_article_cache_file(path):
@@ -105,21 +143,10 @@ async def process_article(game_id: str, post_id: int) -> str:
         post_info = await hyperion.get_post_info(gids=gids, post_id=post_id)
     finally:
         await hyperion.close()
-    post_data = post_info["post"]["post"]
-    post_soup = BeautifulSoup(post_data["content"], features="lxml")
-    author_data = post_info["post"]["user"]
-    content = template.render(
-        url=f"https://www.miyoushe.com/{game_id}/article/{post_id}",
-        description=get_description(post_soup),
-        published_time=datetime.fromtimestamp(post_info.created_at).strftime(
-            "%Y-%m-%dT%H:%M:%S.%fZ"
-        ),
-        channel=CHANNEL_MAP.get(game_id, "HSRCN"),
-        article=parse_content(post_soup, post_info.subject, post_info.video_urls),
-        stat=parse_stat(PostStat(**post_info["post"]["stat"])),
-        post=post_data,
-        author=author_data,
-    )
+    if post_info.view_type in [PostType.TEXT, PostType.VIDEO]:
+        content = await process_article_text(game_id, post_id, post_info)
+    elif post_info.view_type == PostType.IMAGE:
+        content = await process_article_image(game_id, post_id, post_info)
     if not DEBUG:
         await write_article_cache_file(path, content)
         add_delete_file_job(path)

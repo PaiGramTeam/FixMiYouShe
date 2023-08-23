@@ -1,9 +1,11 @@
-from typing import Any, List
+from enum import Enum
+from typing import Any, List, Optional
 
 from pydantic import BaseModel, PrivateAttr
 
 __all__ = (
     "PostStat",
+    "PostType",
     "PostInfo",
 )
 
@@ -16,6 +18,14 @@ class PostStat(BaseModel):
     bookmark_num: int = 0
 
 
+class PostType(int, Enum):
+    """帖子类型"""
+
+    TEXT = 1
+    IMAGE = 2
+    VIDEO = 5
+
+
 class PostInfo(BaseModel):
     _data: dict = PrivateAttr()
     post_id: int
@@ -24,6 +34,10 @@ class PostInfo(BaseModel):
     image_urls: List[str]
     created_at: int
     video_urls: List[str]
+    content: str
+    cover: Optional[str]
+    view_type: PostType
+    stat: PostStat
 
     def __init__(self, _data: dict, **data: Any):
         super().__init__(**data)
@@ -42,6 +56,10 @@ class PostInfo(BaseModel):
         created_at = post["created_at"]
         user = _data_post["user"]  # 用户数据
         user_uid = user["uid"]  # 用户ID
+        content = post["content"]
+        cover = post["cover"]
+        view_type = PostType(post["view_type"])
+        stat = PostStat(**_data_post["stat"])
         return PostInfo(
             _data=data,
             post_id=post_id,
@@ -50,6 +68,10 @@ class PostInfo(BaseModel):
             image_urls=image_urls,
             video_urls=video_urls,
             created_at=created_at,
+            content=content,
+            cover=cover,
+            view_type=view_type,
+            stat=stat,
         )
 
     def __getitem__(self, item):
