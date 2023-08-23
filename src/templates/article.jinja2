@@ -56,16 +56,17 @@ Embed MiYouShe posts, videos, polls, and more on Telegram
     {% endif %}
     <p><a href="{{ url }}">查看原文</a></p>
     <!-- author -->
-    <h3>作者信息</h3>
-    {% if author.avatar_url %}
-    <img src="{{ author.avatar_url }}" alt="profile picture"/>
-    {% endif %}
-    <h2>{{ author.nickname }}</h2>
-    <p>
-        <a href="https://www.miyoushe.com/{{ game_id }}/accountCenter/postList?id={{ author.uid }}">@{{ author.nickname }}</a>
-        lv.{{ author.level_exp.level }}
-    </p>
-    <p><a href="{{ url }}">查看原文</a></p>
+    <details>
+        <summary>作者信息</summary>
+        {% if author.avatar_url %}
+        <img src="{{ author.avatar_url }}" alt="profile picture"/>
+        {% endif %}
+        <h2>{{ author.nickname }}</h2>
+        <p>
+            <a href="https://www.miyoushe.com/{{ game_id }}/accountCenter/postList?id={{ author.uid }}">@{{ author.nickname }}</a>
+            lv.{{ author.level_exp.level }}
+        </p>
+    </details>
 </article>
 </body>
 </html>
