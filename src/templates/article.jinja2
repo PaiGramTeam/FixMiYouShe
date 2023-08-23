@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+ _______  __  ___   ___ .___  ___.  __  ____    ____  ______    __    __       _______. __    __   _______
+|   ____||  | \  \ /  / |   \/   | |  | \   \  /   / /  __  \  |  |  |  |     /       ||  |  |  | |   ____|
+|  |__   |  |  \  V  /  |  \  /  | |  |  \   \/   / |  |  |  | |  |  |  |    |   (----`|  |__|  | |  |__
+|   __|  |  |   >   <   |  |\/|  | |  |   \_    _/  |  |  |  | |  |  |  |     \   \    |   __   | |   __|
+|  |     |  |  /  .  \  |  |  |  | |  |     |  |    |  `--'  | |  `--'  | .----)   |   |  |  |  | |  |____
+|__|     |__| /__/ \__\ |__|  |__| |__|     |__|     \______/   \______/  |_______/    |__|  |__| |_______|
+
+Embed MiYouShe posts, videos, polls, and more on Telegram
+-->
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="canonical" href="{{ url }}"/>
+    <meta property="theme-color" content="#00a8fc"/>
+    <meta property="twitter:site" content="{{ author.nickname }}"/>
+    <meta property="twitter:creator" content="{{ author.nickname }}"/>
+    <meta property="twitter:title" content="{{ post.subject }} ({{ author.nickname }})"/>
+    <meta property="twitter:image" content="{{ post.cover }}"/>
+    <meta property="twitter:card" content="summary_large_image"/>
+
+    <meta property="og:url" content="{{ url }}"/>
+    <meta property="og:image" content="{{ post.cover }}"/>
+    <meta property="og:title" content="{{ post.subject }} ({{ author.nickname }})"/>
+    <meta property="og:description" content="{{ description }}"/>
+    <meta property="og:site_name" content="{{ post.subject }} - {{ author.nickname }} - 米游社"/>
+
+    <meta property="author" content="{{ author.nickname }}">
+    <!-- Telegram -->
+    <meta property="al:android:app_name" content="Medium"/>
+    <meta property="article:published_time" content="{{ published_time }}"/>
+    <meta name="telegram:channel" content="@{{ channel }}" />
+</head>
+<body>
+<section class="section-backgroundImage">
+    <figure class="graf--layoutFillWidth"></figure>
+</section>
+<section class="section--first">
+    If you can see this, your browser is doing something weird with your user agent.
+    <a href="{{ url }}">View original post</a>
+</section>
+<article>
+    <!-- article content -->
+    {{ article }}
+    <!-- stat -->
+    {{ stat }}
+    <p><a href="{{ url }}">查看原文</a></p>
+    <!-- author -->
+    <h3>作者信息</h3>
+    {% if author.avatar_url %}
+    <img src="{{ author.avatar_url }}" alt="profile picture"/>
+    {% endif %}
+    <h2>{{ author.nickname }}</h2>
+    <p>
+        <a href="https://www.miyoushe.com/sr/accountCenter/postList?id={{ author.uid }}">@{{ author.nickname }}</a>
+        lv.{{ author.level_exp.level }}
+    </p>
+    <p><a href="{{ url }}">查看原文</a></p>
+</article>
+</body>
+</html>
