@@ -47,7 +47,11 @@ def parse_tag(tag: Union[Tag, PageElement]) -> str:
         if href and href.startswith("http"):
             return f'<a href="{href}">{tag.get_text()}</a>'
     elif tag.name == "img":
-        return str(tag)
+        src = tag.get("src")
+        # fix telegram fetch url failed
+        if src and "upload-bbs.miyoushe.com" in src:
+            return str(tag)
+        return ""
     elif tag.name == "p":
         t = tag.get_text()
         if not t:
