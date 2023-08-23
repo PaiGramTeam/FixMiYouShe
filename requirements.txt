@@ -1,6 +1,6 @@
 httpx==0.24.1
 fastapi~=0.101.1
-starlette~=0.31.0
+starlette
 uvicorn~=0.23.2
 pydantic
 python-dotenv

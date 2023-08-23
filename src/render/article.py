@@ -46,7 +46,7 @@ def parse_tag(tag: Union[Tag, PageElement]) -> str:
         if href and href.startswith("http"):
             return f'<a href="{href}">{tag.get_text()}</a>'
     elif tag.name == "img":
-        return f"<p>{str(tag)}</p>"
+        return str(tag)
     elif tag.name == "p":
         t = tag.get_text()
         if not t:
