@@ -25,7 +25,8 @@ Embed MiYouShe posts, videos, polls, and more on Telegram
     <meta property="og:image" content="{{ post.cover }}"/>
     <meta property="og:title" content="{{ post.subject }} ({{ author.nickname }})"/>
     <meta property="og:description" content="{{ description }}"/>
-    <meta property="og:site_name" content="{{ post.subject }} - {{ author.nickname }} - 米游社"/>
+    {% if post.hoyolab %}{% set site_name = 'HoYoLab' %}{% else %}{% set site_name = '米游社' %}{% endif %}
+    <meta property="og:site_name" content="{{ post.subject }} - {{ author.nickname }} - {{ site_name }}"/>
 
     <meta property="author" content="{{ author.nickname }}">
     <!-- Telegram -->
@@ -71,11 +72,7 @@ Embed MiYouShe posts, videos, polls, and more on Telegram
     {% if related_posts %}
     {% for post_ in related_posts %}
     <related>
-        {% if i18n.lang.value == 'zh-cn' %}
-        {% set ends = '' %}
-        {% else %}
-        {% set ends = '/' + i18n.lang.value %}
-        {% endif %}
+        {% if i18n.lang.value == 'zh-cn' %}{% set ends = '' %}{% else %}{% set ends = '/' + i18n.lang.value %}{% endif %}
         <a href="https://{{ DOMAIN }}/{{ post.url_start }}/{{ post_.post_id }}{{ ends }}">{{ post_.subject }}</a>
     </related>
     <br/>
