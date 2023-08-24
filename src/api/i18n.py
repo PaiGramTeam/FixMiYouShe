@@ -19,6 +19,23 @@ class I18nLang(str, Enum):
     VI_VN = "vi-vn"
 
 
+i18n_alias = {
+    "zh": I18nLang.ZH_CN,
+    "tw": I18nLang.ZH_TW,
+    "de": I18nLang.DE_DE,
+    "en": I18nLang.EN_US,
+    "es": I18nLang.ES_ES,
+    "fr": I18nLang.FR_FR,
+    "id": I18nLang.ID_ID,
+    "it": I18nLang.IT_IT,
+    "ja": I18nLang.JA_JP,
+    "ko": I18nLang.KO_KR,
+    "pt": I18nLang.PT_PT,
+    "ru": I18nLang.RU_RU,
+    "th": I18nLang.TH_TH,
+    "tr": I18nLang.TR_TR,
+    "vi": I18nLang.VI_VN,
+}
 i18n_map = {
     I18nLang.ZH_CN: {
         "view": "查看原文",

@@ -2,7 +2,7 @@ import json
 from typing import Dict, List, Callable
 
 from src.api.hoyolab import Hoyolab
-from src.api.i18n import I18n
+from src.api.i18n import I18n, i18n_alias
 from src.api.models import PostRecommend, PostType, PostInfo
 from src.env import HOYOLAB
 from src.log import logger
@@ -55,7 +55,9 @@ async def process_article_video(
 
 async def process_article(post_id: int, lang: str) -> str:
     try:
-        i18n = I18n(lang)
+        i18n = I18n(i18n_alias.get(lang))
+        if not i18n:
+            i18n = I18n(lang)
     except ValueError:
         i18n = I18n()
     async with Hoyolab() as hoyolab:
