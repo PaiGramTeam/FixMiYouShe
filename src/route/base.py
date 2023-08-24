@@ -3,15 +3,19 @@ from typing import TYPE_CHECKING
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import RedirectResponse
 
+from src.env import MIYOUSHE
+
 if TYPE_CHECKING:
     from starlette.middleware.base import RequestResponseEndpoint
     from starlette.requests import Request
     from starlette.responses import Response
 
+BASE_URL = "https://www.miyoushe.com" if MIYOUSHE else "https://www.hoyolab.com"
+
 
 def get_redirect_response(request: "Request") -> RedirectResponse:
     path = request.url.path
-    return RedirectResponse(url=f"https://www.miyoushe.com{path}", status_code=302)
+    return RedirectResponse(url=f"{BASE_URL}{path}", status_code=302)
 
 
 class UserAgentMiddleware(BaseHTTPMiddleware):

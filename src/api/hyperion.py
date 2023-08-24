@@ -2,7 +2,6 @@ from typing import List
 
 from .hyperionrequest import HyperionRequest
 from .models import PostInfo, PostRecommend
-from ..typedefs import JSON_DATA
 
 __all__ = ("Hyperion",)
 
@@ -14,10 +13,6 @@ class Hyperion:
     """
 
     POST_FULL_URL = "https://bbs-api.miyoushe.com/post/wapi/getPostFull"
-    POST_FULL_IN_COLLECTION_URL = (
-        "https://bbs-api.miyoushe.com/post/wapi/getPostFullInCollection"
-    )
-    GET_NEW_LIST_URL = "https://bbs-api.miyoushe.com/post/wapi/getNewsList"
     GET_OFFICIAL_RECOMMENDED_POSTS_URL = (
         "https://bbs-api.miyoushe.com/post/wapi/getOfficialRecommendedPosts"
     )
@@ -32,19 +27,6 @@ class Hyperion:
 
     def get_headers(self, referer: str = "https://www.miyoushe.com/ys/"):
         return {"User-Agent": self.USER_AGENT, "Referer": referer}
-
-    @staticmethod
-    def get_list_url_params(
-        forum_id: int, is_good: bool = False, is_hot: bool = False, page_size: int = 20
-    ) -> dict:
-        return {
-            "forum_id": forum_id,
-            "gids": 2,
-            "is_good": is_good,
-            "is_hot": is_hot,
-            "page_size": page_size,
-            "sort_type": 1,
-        }
 
     @staticmethod
     def get_images_params(
@@ -76,32 +58,16 @@ class Hyperion:
         )
         return [PostRecommend(**data) for data in response["list"]]
 
-    async def get_post_full_in_collection(
-        self, collection_id: int, gids: int = 2, order_type=1
-    ) -> JSON_DATA:
-        params = {
-            "collection_id": collection_id,
-            "gids": gids,
-            "order_type": order_type,
-        }
-        response = await self.client.get(
-            url=self.POST_FULL_IN_COLLECTION_URL, params=params
-        )
-        return response
-
     async def get_post_info(self, gids: int, post_id: int, read: int = 1) -> PostInfo:
         params = {"gids": gids, "post_id": post_id, "read": read}
         response = await self.client.get(self.POST_FULL_URL, params=params)
         return PostInfo.paste_data(response)
 
-    async def get_new_list(self, gids: int, type_id: int, page_size: int = 20):
-        """
-        ?gids=2&page_size=20&type=3
-        :return:
-        """
-        params = {"gids": gids, "page_size": page_size, "type": type_id}
-        response = await self.client.get(url=self.GET_NEW_LIST_URL, params=params)
-        return response
-
     async def close(self):
         await self.client.shutdown()
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()

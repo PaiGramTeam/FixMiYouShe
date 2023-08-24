@@ -13,16 +13,16 @@ Embed MiYouShe posts, videos, polls, and more on Telegram
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link rel="canonical" href="{{ url }}"/>
+    <link rel="canonical" href="{{ post.url }}"/>
     <meta property="theme-color" content="#00a8fc"/>
     <meta property="twitter:site" content="{{ author.nickname }}"/>
     <meta property="twitter:creator" content="{{ author.nickname }}"/>
     <meta property="twitter:title" content="{{ post.subject }} ({{ author.nickname }})"/>
-    <meta property="twitter:image" content="{{ cover }}"/>
+    <meta property="twitter:image" content="{{ post.cover }}"/>
     <meta property="twitter:card" content="summary_large_image"/>
 
-    <meta property="og:url" content="{{ url }}"/>
-    <meta property="og:image" content="{{ cover }}"/>
+    <meta property="og:url" content="{{ post.url }}"/>
+    <meta property="og:image" content="{{ post.cover }}"/>
     <meta property="og:title" content="{{ post.subject }} ({{ author.nickname }})"/>
     <meta property="og:description" content="{{ description }}"/>
     <meta property="og:site_name" content="{{ post.subject }} - {{ author.nickname }} - 米游社"/>
@@ -39,7 +39,7 @@ Embed MiYouShe posts, videos, polls, and more on Telegram
 </section>
 <section class="section--first">
     If you can see this, your browser is doing something weird with your user agent.
-    <a href="{{ url }}">View original post</a>
+    <a href="{{ post.url }}">View original post</a>
 </section>
 <article>
     <!-- article content -->
@@ -50,28 +50,33 @@ Embed MiYouShe posts, videos, polls, and more on Telegram
     {% if post.topics %}
     <p>
         {% for topic in post.topics %}
-        <a href="https://www.miyoushe.com/{{ game_id }}/topicDetail/{{ topic.id }}">#{{ topic.name }} </a>
+        <a href="{{ topic.url }}">#{{ topic.name }} </a>
         {% endfor %}
     </p>
     {% endif %}
-    <p><a href="{{ url }}">查看原文</a></p>
+    <p><a href="{{ post.url }}">{{ i18n.view }}</a></p>
     <!-- author -->
     <details>
-        <summary>作者信息</summary>
+        <summary>{{ i18n.author }}</summary>
         {% if author.avatar_url %}
         <img src="{{ author.avatar_url }}" alt="profile picture"/>
         {% endif %}
         <h2>{{ author.nickname }}</h2>
         <p>
-            <a href="https://www.miyoushe.com/{{ game_id }}/accountCenter/postList?id={{ author.uid }}">@{{ author.nickname }}</a>
+            <a href="{{ post.author_url }}">@{{ author.nickname }}</a>
             lv.{{ author.level_exp.level }}
         </p>
     </details>
     <!-- related posts -->
     {% if related_posts %}
-    {% for post in related_posts %}
+    {% for post_ in related_posts %}
     <related>
-        <a href="https://{{ DOMAIN }}/{{ game_id }}/article/{{ post.post_id }}">{{ post.subject }}</a>
+        {% if i18n.lang.value == 'zh-cn' %}
+        {% set ends = '' %}
+        {% else %}
+        {% set ends = '/' + i18n.lang.value %}
+        {% endif %}
+        <a href="https://{{ DOMAIN }}/{{ post.url_start }}/{{ post_.post_id }}{{ ends }}">{{ post_.subject }}</a>
     </related>
     <br/>
     {% endfor %}
