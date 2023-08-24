@@ -13,6 +13,8 @@ from src.api.models import (
     PostRecommend,
     CHANNEL_MAP,
     GAME_ID_MAP,
+    get_images_params,
+    clean_url,
 )
 from src.env import DOMAIN, MIYOUSHE
 from src.error import ArticleNotFoundError
@@ -42,17 +44,9 @@ def get_description(soup: BeautifulSoup) -> str:
     return post_text
 
 
-def clean_url(url: str) -> str:
-    if not url:
-        return ""
-    return url.replace(
-        "hoyolab-upload-private.hoyolab.com", "upload-os-bbs.hoyolab.com"
-    ).split("?")[0]
-
-
 def format_image_url(url: str) -> str:
     if url.endswith(".png") or url.endswith(".jpg"):
-        url += Hyperion.get_images_params()
+        url += get_images_params()
     return f'<img src="{url}"/>'
 
 

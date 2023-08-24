@@ -11,12 +11,45 @@ __all__ = (
     "GAME_ID_MAP",
     "GAME_STR_MAP",
     "CHANNEL_MAP",
+    "clean_url",
+    "get_images_params",
     "PostStat",
     "PostType",
     "HoYoPostMultiLang",
     "PostInfo",
     "PostRecommend",
 )
+
+
+def clean_url(url: str) -> str:
+    if not url:
+        return ""
+    return url.replace(
+        "hoyolab-upload-private.hoyolab.com", "upload-os-bbs.hoyolab.com"
+    ).split("?")[0]
+
+
+def get_images_params(
+    resize: int = 600,
+    quality: int = 80,
+    auto_orient: int = 0,
+    interlace: int = 1,
+    images_format: str = "jpg",
+) -> str:
+    """
+    image/resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg
+    :param resize: 图片大小
+    :param quality: 图片质量
+    :param auto_orient: 自适应
+    :param interlace: 未知
+    :param images_format: 图片格式
+    :return:
+    """
+    params = (
+        f"image/resize,s_{resize}/quality,q_{quality}/auto-orient,"
+        f"{auto_orient}/interlace,{interlace}/format,{images_format}"
+    )
+    return f"?x-oss-process={params}"
 
 
 class PostStat(BaseModel):
@@ -136,6 +169,8 @@ class PostInfo(BaseModel):
             cover = cover_list[0]["url"]
         if (not cover) and image_urls:
             cover = image_urls[0]
+        if cover:
+            cover = clean_url(cover) + get_images_params()
         game_id = post["game_id"]
         topics = [
             PostTopic(game_id_=game_id, hoyolab=hoyolab, **topic)
