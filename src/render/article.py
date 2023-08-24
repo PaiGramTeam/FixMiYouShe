@@ -43,7 +43,7 @@ def format_image_url(url: str) -> str:
     return f'<img src="{url}"/>'
 
 
-def parse_tag(tag: Union[Tag, PageElement]) -> str:
+def parse_tag(tag: Union[Tag, PageElement], post_info: PostInfo) -> str:
     if tag.name == "a":
         href = tag.get("href")
         if href and href.startswith("/"):
@@ -52,7 +52,7 @@ def parse_tag(tag: Union[Tag, PageElement]) -> str:
             return f'<a href="{href}">{tag.get_text()}</a>'
     elif tag.name == "img":
         src = tag.get("src")
-        if src and "upload-bbs.miyoushe.com" in src:
+        if src and "upload-bbs.miyoushe.com" in src and src in post_info.image_urls:
             return format_image_url(src)
         return ""
     elif tag.name == "p":
@@ -61,25 +61,25 @@ def parse_tag(tag: Union[Tag, PageElement]) -> str:
             return ""
         post_text = []
         for tag_ in tag.children:
-            if text := parse_tag(tag_):
+            if text := parse_tag(tag_, post_info):
                 post_text.append(text)
         return "<p>" + "\n".join(post_text) + "</p>"
     elif tag.name == "div":
         post_text = []
         for tag_ in tag.children:
-            if text := parse_tag(tag_):
+            if text := parse_tag(tag_, post_info):
                 post_text.append(text)
         return "\n".join(post_text)
     return replace_br(tag.get_text().strip())
 
 
-def parse_content(soup: BeautifulSoup, title: str, video_urls: List[str]) -> str:
-    post_text = f"<h1>{title}</h1>\n"
-    if video_urls:
-        for url in video_urls:
+def parse_content(soup: BeautifulSoup, post_info: PostInfo) -> str:
+    post_text = f"<h1>{post_info.subject}</h1>\n"
+    if post_info.video_urls:
+        for url in post_info.video_urls:
             post_text += f'<video controls="controls" src="{url}"></video>\n'
     for tag in soup.find("body").children:
-        if text := parse_tag(tag):
+        if text := parse_tag(tag, post_info):
             post_text += f"{text}\n"
     return post_text
 
@@ -127,7 +127,7 @@ async def process_article_text(game_id: str, post_id: int, post_info: PostInfo) 
     post_soup = BeautifulSoup(post_info.content, features="lxml")
     return template.render(
         description=get_description(post_soup),
-        article=parse_content(post_soup, post_info.subject, post_info.video_urls),
+        article=parse_content(post_soup, post_info),
         **get_public_data(game_id, post_id, post_info),
     )
 
@@ -137,7 +137,8 @@ async def process_article_image(game_id: str, post_id: int, post_info: PostInfo)
     description = json_data.get("describe", "")
     article = ""
     for image in json_data.get("imgs", []):
-        article += format_image_url(image)
+        if image in post_info.image_urls:
+            article += format_image_url(image)
     if description:
         article += f"<p>{description}</p>\n"
     return template.render(

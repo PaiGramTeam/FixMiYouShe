@@ -57,7 +57,11 @@ class PostInfo(BaseModel):
         post_id = post["post_id"]
         subject = post["subject"]
         image_list = _data_post["image_list"]
-        image_urls = [image["url"] for image in image_list]
+        image_urls = [
+            image["url"]
+            for image in image_list
+            if abs(image["width"] - image["height"]) < 1300
+        ]
         vod_list = _data_post["vod_list"]
         video_urls = [vod["resolutions"][-1]["url"] for vod in vod_list]
         created_at = post["created_at"]
