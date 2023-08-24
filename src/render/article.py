@@ -42,6 +42,14 @@ def get_description(soup: BeautifulSoup) -> str:
     return post_text
 
 
+def clean_url(url: str) -> str:
+    if not url:
+        return ""
+    return url.replace(
+        "hoyolab-upload-private.hoyolab.com", "upload-os-bbs.hoyolab.com"
+    ).split("?")[0]
+
+
 def format_image_url(url: str) -> str:
     if url.endswith(".png") or url.endswith(".jpg"):
         url += Hyperion.get_images_params()
@@ -56,8 +64,12 @@ def parse_tag(tag: Union[Tag, PageElement], post_info: PostInfo) -> str:
         if href and href.startswith("http"):
             return f'<a href="{href}">{tag.get_text()}</a>'
     elif tag.name == "img":
-        src = tag.get("src")
-        if src and "upload-bbs.miyoushe.com" in src and src in post_info.image_urls:
+        src = clean_url(tag.get("src"))
+        if (
+            src
+            and ("upload-bbs.miyoushe.com" in src or "upload-os-bbs.hoyolab.com" in src)
+            and src in post_info.image_urls
+        ):
             return format_image_url(src)
         return ""
     elif tag.name == "p":
