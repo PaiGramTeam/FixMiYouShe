@@ -109,3 +109,9 @@ class I18n:
 
     def __getitem__(self, item):
         return self.get_property(item)
+
+    @property
+    def lang_alias(self) -> str:
+        for k, v in i18n_alias.items():
+            if v == self.lang:
+                return k

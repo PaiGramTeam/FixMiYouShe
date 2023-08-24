@@ -72,7 +72,7 @@ Embed MiYouShe posts, videos, polls, and more on Telegram
     {% if related_posts %}
     {% for post_ in related_posts %}
     <related>
-        {% if i18n.lang.value == 'zh-cn' %}{% set ends = '' %}{% else %}{% set ends = '/' + i18n.lang.value %}{% endif %}
+        {% if i18n.lang.value == 'zh-cn' %}{% set ends = '' %}{% else %}{% set ends = '/' + i18n.lang_alias %}{% endif %}
         <a href="https://{{ DOMAIN }}/{{ post.url_start }}/{{ post_.post_id }}{{ ends }}">{{ post_.subject }}</a>
     </related>
     <br/>
