@@ -120,7 +120,7 @@ def get_public_data(
 ) -> Dict:
     return {
         "published_time": post_info.created_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
-        "channel": CHANNEL_MAP.get(post_info.game_id, "HSRCN"),
+        "channel": CHANNEL_MAP.get(post_info.game_id_str, "HSRCN"),
         "stat": parse_stat(post_info.stat),
         "post": post_info,
         "author": post_info["post"]["user"],
