@@ -25,29 +25,6 @@ class Hoyolab:
             "X-Rpc-Language": lang,
         }
 
-    @staticmethod
-    def get_images_params(
-        resize: int = 600,
-        quality: int = 80,
-        auto_orient: int = 0,
-        interlace: int = 1,
-        images_format: str = "jpg",
-    ) -> str:
-        """
-        image/resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg
-        :param resize: 图片大小
-        :param quality: 图片质量
-        :param auto_orient: 自适应
-        :param interlace: 未知
-        :param images_format: 图片格式
-        :return:
-        """
-        params = (
-            f"image/resize,s_{resize}/quality,q_{quality}/auto-orient,"
-            f"{auto_orient}/interlace,{interlace}/format,{images_format}"
-        )
-        return f"?x-oss-process={params}"
-
     async def get_news_recommend(
         self, gids: int, page_size: int = 3, type_: int = 1
     ) -> List[PostRecommend]:
