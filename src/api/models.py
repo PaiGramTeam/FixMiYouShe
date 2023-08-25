@@ -155,7 +155,7 @@ class PostInfo(BaseModel):
         image_urls = [
             image["url"]
             for image in image_list
-            if abs(image["width"] - image["height"]) < 1300
+            if 0.1 <= (image["width"] / image["height"]) <= 10
         ]
         vod_list = _data_post.get("vod_list", [])
         video_urls = [vod["resolutions"][-1]["url"] for vod in vod_list]
