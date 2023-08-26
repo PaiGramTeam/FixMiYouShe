@@ -1,6 +1,7 @@
+import json
 from datetime import datetime
 from enum import Enum
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Dict
 
 from pydantic import BaseModel, PrivateAttr, Field, AliasChoices
 
@@ -145,6 +146,24 @@ class PostInfo(BaseModel):
             return f"https://www.miyoushe.com/{self.game_id_str}/accountCenter/postList?id={author['uid']}"
         return f"https://www.hoyolab.com/accountCenter/postList?id={author['uid']}"
 
+    @staticmethod
+    def parse_structured_content(data: List[Dict]) -> str:
+        content = []
+        for item in data:
+            if not item or item.get("insert") is None:
+                continue
+            insert = item["insert"]
+            if isinstance(insert, str):
+                if attr := item.get("attributes"):
+                    if link := attr.get("link"):
+                        content.append(f'<p><a href="{link}">{insert}</a></p>')
+                        continue
+                content.append(f"<p>{insert}</p>")
+            elif isinstance(insert, dict):
+                if image := insert.get("image"):
+                    content.append(f'<img src="{image}" />')
+        return "\n".join(content)
+
     @classmethod
     def paste_data(cls, data: dict, hoyolab: bool = False) -> "PostInfo":
         _data_post = data["post"]
@@ -163,6 +182,12 @@ class PostInfo(BaseModel):
         user = _data_post["user"]  # 用户数据
         user_uid = user["uid"]  # 用户ID
         content = post["content"]
+        if (
+            hoyolab
+            and ("<" not in content)
+            and (structured_content := post.get("structured_content"))
+        ):
+            content = PostInfo.parse_structured_content(json.loads(structured_content))
         cover = post["cover"]
         cover_list = _data_post.get("cover_list", [])
         if (not cover) and cover_list:

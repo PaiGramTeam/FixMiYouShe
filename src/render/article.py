@@ -67,6 +67,10 @@ def parse_tag(tag: Union[Tag, PageElement], post_info: PostInfo) -> str:
         ):
             return format_image_url(src)
         return ""
+    elif tag.name in ["h1", "h2", "h3", "h4", "h5", "h6"]:
+        return f"<{tag.name}>{tag.get_text()}</{tag.name}>"
+    elif tag.name == "strong":
+        return f"<strong>{tag.get_text()}</strong>"
     elif tag.name == "p":
         t = tag.get_text()
         if not t:
@@ -75,7 +79,7 @@ def parse_tag(tag: Union[Tag, PageElement], post_info: PostInfo) -> str:
         for tag_ in tag.children:
             if text := parse_tag(tag_, post_info):
                 post_text.append(text)
-        return "<p>" + "\n".join(post_text) + "</p>"
+        return "<p>" + "\n".join(post_text) + "</p>\n"
     elif tag.name == "iframe":
         src = tag.get("src")
         if src and "https://www.youtube.com" in src:
