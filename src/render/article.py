@@ -46,8 +46,10 @@ def get_description(soup: BeautifulSoup) -> str:
 
 def format_image_url(url: str) -> str:
     lower_url = url.lower()
-    if lower_url.endswith(".png") or lower_url.endswith(".jpg"):
-        url += get_images_params()
+    for ext in (".png", ".jpg", ".jpeg"):
+        if lower_url.endswith(ext):
+            url += get_images_params()
+            break
     return f'<img src="{url}"/>'
 
 
