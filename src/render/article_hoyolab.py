@@ -75,6 +75,7 @@ if HOYOLAB:
 
     @scheduler.scheduled_job("cron", minute="0", second="10")
     async def refresh_hoyo_recommend_posts():
+        global RECOMMEND_POST_MAP
         logger.info("Start to refresh hoyolab recommend posts")
         async with Hoyolab() as hoyolab:
             for gids in GAME_ID_MAP.values():

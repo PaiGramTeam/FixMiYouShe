@@ -193,6 +193,7 @@ if MIYOUSHE:
 
     @scheduler.scheduled_job("cron", minute="0", second="10")
     async def refresh_recommend_posts():
+        global RECOMMEND_POST_MAP
         logger.info("Start to refresh recommend posts")
         async with Hyperion() as hyperion:
             for key, gids in GAME_ID_MAP.items():
