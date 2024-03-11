@@ -1,5 +1,10 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from fastapi import FastAPI
 
 scheduler = AsyncIOScheduler(timezone="Asia/ShangHai")
-if not scheduler.running:
-    scheduler.start()
+
+
+def register_scheduler(app: "FastAPI"):
+    @app.on_event("startup")
+    async def start_event():
+        scheduler.start()
