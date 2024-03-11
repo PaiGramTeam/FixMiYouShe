@@ -19,6 +19,8 @@ __all__ = (
     "HoYoPostMultiLang",
     "PostInfo",
     "PostRecommend",
+    "GameBgData",
+    "GameListItem",
 )
 
 
@@ -236,3 +238,16 @@ class PostRecommend(BaseModel):
     banner: Optional[str] = None
     official_type: Optional[int] = None
     multi_language_info: Optional[HoYoPostMultiLang] = None
+
+
+class GameListItem(BaseModel):
+    id: str
+    icon: str
+    bg: str
+    name: str
+    bg_color: str
+    focus_channel_id: str
+
+
+class GameBgData(BaseModel):
+    game_list: List[GameListItem]

@@ -16,6 +16,7 @@ from src.api.models import (
     get_images_params,
     clean_url,
 )
+from src.data.get_bg import BG_MAP
 from src.env import DOMAIN, MIYOUSHE
 from src.error import ArticleNotFoundError
 from src.log import logger
@@ -138,6 +139,7 @@ def get_public_data(
         "post": post_info,
         "author": post_info["post"]["user"],
         "related_posts": related_posts(post_info, i18n),
+        "GAME_BG": BG_MAP.get(post_info.game_id, ""),
         "DOMAIN": DOMAIN,
         "i18n": i18n,
     }

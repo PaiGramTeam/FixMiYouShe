@@ -1,7 +1,7 @@
 from typing import List
 
 from .hyperionrequest import HyperionRequest
-from .models import PostInfo, PostRecommend, HoYoPostMultiLang
+from .models import PostInfo, PostRecommend, HoYoPostMultiLang, GameBgData
 
 __all__ = ("Hoyolab",)
 
@@ -9,6 +9,7 @@ __all__ = ("Hoyolab",)
 class Hoyolab:
     POST_FULL_URL = "https://bbs-api-os.hoyolab.com/community/post/wapi/getPostFull"
     NEW_LIST_URL = "https://bbs-api-os.hoyolab.com/community/post/wapi/getNewsList"
+    NEW_BG_URL = "https://bbs-api-os.hoyolab.com/community/painter/wapi/circle/info"
     LANG = "zh-cn"
     USER_AGENT = (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -49,6 +50,15 @@ class Hoyolab:
             self.POST_FULL_URL, params=params, headers=self.get_headers(lang=lang)
         )
         return PostInfo.paste_data(response, hoyolab=True)
+
+    async def get_news_bg(self) -> GameBgData:
+        params = {"with_channel": "1"}
+        headers = {
+            'x-rpc-app_version': '2.50.0',
+            'x-rpc-client_type': '4',
+        }
+        response = await self.client.get(url=self.NEW_BG_URL, params=params, headers=headers)
+        return GameBgData(**response)
 
     async def close(self):
         await self.client.shutdown()
