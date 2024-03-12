@@ -42,14 +42,11 @@ Embed MiYouShe posts, videos, polls, and more on Telegram
     If you can see this, your browser is doing something weird with your user agent.
     <a href="{{ post.url }}">View original post</a>
 </section>
-{% if GAME_BG %}
-<section class="is-imageBackgrounded">
-  <figure>
-    <img src="{{ GAME_BG }}"/>
-  </figure>
-</section>
-{% endif %}
 <article>
+    <!-- game big bg -->
+    {% if GAME_BG %}
+        <img src="{{ GAME_BG }}" alt="gameBg" />
+    {% endif %}
     <!-- article content -->
     {{ article }}
     <!-- stat -->
