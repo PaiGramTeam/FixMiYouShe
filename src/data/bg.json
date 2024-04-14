@@ -3,23 +3,23 @@
         {
             "id": "2",
             "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2023/11/08/9db76fb146f82c045bc276956f86e047_6878380451593228482.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/01/25/10c35a3445d4ef6d8f5639dcac3214b8_8146537302179438669.jpg",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/03/04/7df973dfdfdf59c02e0e0d0032fced0e_5305991370409341804.jpg",
             "name": "原神",
-            "bg_color": "#442521",
+            "bg_color": "#1E6177",
             "focus_channel_id": "30"
         },
         {
             "id": "6",
             "icon": "https://webstatic-sea.hoyolab.com/communityweb/business/starrail_hoyoverse.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/02/08/7377bd283ecff06d21a053730b7831b6_4844686270331272034.jpg",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/03/16/70b7c4bf85c6f924e072c16aae329bc0_4584331123053440172.png",
             "name": "崩坏：星穹铁道",
-            "bg_color": "#A675C4",
+            "bg_color": "#4E3EC0",
             "focus_channel_id": "42"
         },
         {
             "id": "8",
             "icon": "https://webstatic-sea.hoyolab.com/communityweb/business/nap.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2023/11/03/c03d42301f986420af3addb3790e1081_6458510613402567619.jpg",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/03/14/5954031fdaa7605823671807d5784637_5991613770476069848.jpg",
             "name": "绝区零",
             "bg_color": "#F5F6FB",
             "focus_channel_id": "46"
