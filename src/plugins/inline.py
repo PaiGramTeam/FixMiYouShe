@@ -9,6 +9,7 @@ from pyrogram.types import (
     InlineQueryResultDocument,
 )
 
+from .start import get_test_button
 from ..api.bot_request import get_post_info
 from ..bot import bot
 from ..utils.url import get_lab_link
@@ -20,6 +21,7 @@ def get_help_article() -> InlineQueryResultArticle:
         title=">> 帮助 <<",
         description="将 Bot 添加到群组或频道可以自动匹配消息。",
         input_message_content=InputTextMessageContent(text),
+        reply_markup=get_test_button(),
     )
 
 

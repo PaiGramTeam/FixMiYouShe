@@ -38,6 +38,8 @@ async def process_link(_, message: Message):
     markdown_text = text.markdown
     if not markdown_text:
         return
+    if markdown_text.startswith("~"):
+        return
     links = get_lab_link(markdown_text)
     if not links:
         return
