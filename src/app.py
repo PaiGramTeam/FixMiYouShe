@@ -35,7 +35,7 @@ class Web:
     async def start(self):
         self.init_web()
         self.web_server = uvicorn.Server(
-            config=uvicorn.Config(app, host="0.0.0.0", port=PORT)
+            config=uvicorn.Config(app, host="127.0.0.1", port=PORT)
         )
         server_config = self.web_server.config
         server_config.setup_event_loop()

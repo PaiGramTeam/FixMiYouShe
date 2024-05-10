@@ -25,8 +25,8 @@ def parse_link(url: URL) -> URL:
 
 def get_lab_link(url: str) -> Dict[str, str]:
     data = {}
-    for url in extractor.find_urls(url):
-        u = URL(url)
+    for old_url in extractor.find_urls(url):
+        u = URL(old_url)
         if u.scheme not in ["http", "https"]:
             continue
         if u.host not in [
@@ -38,5 +38,5 @@ def get_lab_link(url: str) -> Dict[str, str]:
             continue
         parsed_link = str(parse_link(u))
         if "article" in parsed_link:
-            data[url] = parsed_link
+            data[old_url] = parsed_link
     return data
