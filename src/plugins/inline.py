@@ -1,13 +1,17 @@
 from typing import List
 
-from pyrogram.types import InputTextMessageContent, InlineQueryResultArticle, InlineQuery
+from pyrogram.types import (
+    InputTextMessageContent,
+    InlineQueryResultArticle,
+    InlineQuery,
+)
 
 from ..bot import bot
 from ..utils.url import get_lab_link
 
 
 def get_help_article():
-    text = f"欢迎使用 @{bot.me.username} 的 Inline 模式来转换链接，您也可以将 Bot 添加到群组或频道自动匹配消息。"
+    text = f"欢迎使用 @{bot.me.username} 来转换 米游社/HoYoLab 链接，您也可以将 Bot 添加到群组或频道自动匹配消息。"
     return InlineQueryResultArticle(
         title=">> 帮助 <<",
         description="将 Bot 添加到群组或频道可以自动匹配消息。",
@@ -28,7 +32,9 @@ def get_article(message: str) -> List[InlineQueryResultArticle]:
         InlineQueryResultArticle(
             title=">> 转换结果 <<",
             description="点击发送",
-            input_message_content=InputTextMessageContent(message, disable_web_page_preview=False),
+            input_message_content=InputTextMessageContent(
+                message, disable_web_page_preview=False
+            ),
         ),
     ]
 
@@ -38,7 +44,7 @@ async def inline(_, query: InlineQuery):
     message = query.query
     results = get_article(message)
     await query.answer(
-        switch_pm_text="Hello!",
+        switch_pm_text="🔎 输入 米游社/HoYoLab 链接来转换",
         switch_pm_parameter="start",
         results=results,
     )

@@ -54,10 +54,12 @@ class Hoyolab:
     async def get_news_bg(self) -> GameBgData:
         params = {"with_channel": "1"}
         headers = {
-            'x-rpc-app_version': '2.50.0',
-            'x-rpc-client_type': '4',
+            "x-rpc-app_version": "2.50.0",
+            "x-rpc-client_type": "4",
         }
-        response = await self.client.get(url=self.NEW_BG_URL, params=params, headers=headers)
+        response = await self.client.get(
+            url=self.NEW_BG_URL, params=params, headers=headers
+        )
         return GameBgData(**response)
 
     async def close(self):

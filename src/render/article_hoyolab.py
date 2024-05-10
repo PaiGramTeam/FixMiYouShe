@@ -23,11 +23,11 @@ def get_recommend_post(post_info: PostInfo, i18n: I18n) -> List[PostRecommend]:
     return [
         PostRecommend(
             post_id=post.post_id,
-            subject=post.multi_language_info.lang_subject.get(
-                i18n.lang.value, post.subject
-            )
-            if post.multi_language_info
-            else post.subject,
+            subject=(
+                post.multi_language_info.lang_subject.get(i18n.lang.value, post.subject)
+                if post.multi_language_info
+                else post.subject
+            ),
         )
         for post in posts
         if post.post_id != post_info.post_id

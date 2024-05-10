@@ -18,3 +18,5 @@ except ValueError:
     pass
 BOT_API_HASH = os.getenv("BOT_API_HASH")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+MIYOUSHE_HOST = os.getenv("MIYOUSHE_HOST")
+HOYOLAB_HOST = os.getenv("HOYOLAB_HOST")

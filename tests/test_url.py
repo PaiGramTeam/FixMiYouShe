@@ -14,7 +14,9 @@ class TestUrl:
 
     @staticmethod
     async def test_hoyolab_android():
-        url = URL("https://m.hoyolab.com/#/article/25091304?utm_source=sns&utm_medium=twitter&utm_id=2")
+        url = URL(
+            "https://m.hoyolab.com/#/article/25091304?utm_source=sns&utm_medium=twitter&utm_id=2"
+        )
         real = parse_link(url)
         assert real == URL("https://www.hoyolab.pp.ua/article/25091304")
 

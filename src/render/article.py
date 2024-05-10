@@ -199,9 +199,9 @@ if MIYOUSHE:
         async with Hyperion() as hyperion:
             for key, gids in GAME_ID_MAP.items():
                 try:
-                    RECOMMEND_POST_MAP[
-                        key
-                    ] = await hyperion.get_official_recommended_posts(gids)
+                    RECOMMEND_POST_MAP[key] = (
+                        await hyperion.get_official_recommended_posts(gids)
+                    )
                 except Exception as _:
                     logger.exception(f"Failed to get recommend posts gids={gids}")
         logger.info("Finish to refresh recommend posts")

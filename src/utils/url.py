@@ -3,9 +3,9 @@ from typing import Dict
 from urlextract import URLExtract
 from httpx import URL
 
+from src.env import HOYOLAB_HOST, MIYOUSHE_HOST
+
 extractor = URLExtract()
-MIYOUSHE_HOST = "www.miyoushe.pp.ua"
-HOYOLAB_HOST = "www.hoyolab.pp.ua"
 
 
 def parse_link(url: URL) -> URL:
@@ -29,7 +29,12 @@ def get_lab_link(url: str) -> Dict[str, str]:
         u = URL(url)
         if u.scheme not in ["http", "https"]:
             continue
-        if u.host not in ["www.miyoushe.com", "m.miyoushe.com", "www.hoyolab.com", "m.hoyolab.com"]:
+        if u.host not in [
+            "www.miyoushe.com",
+            "m.miyoushe.com",
+            "www.hoyolab.com",
+            "m.hoyolab.com",
+        ]:
             continue
         data[url] = str(parse_link(u))
     return data
