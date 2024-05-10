@@ -21,13 +21,13 @@ class Web:
 
     @staticmethod
     def init_web():
-        app.add_middleware(
-            TrustedHostMiddleware,
-            allowed_hosts=[
-                DOMAIN,
-            ],
-        )
         if not DEBUG:
+            app.add_middleware(
+                TrustedHostMiddleware,
+                allowed_hosts=[
+                    DOMAIN,
+                ],
+            )
             app.add_middleware(UserAgentMiddleware)
         get_routes()
         register_scheduler(app)

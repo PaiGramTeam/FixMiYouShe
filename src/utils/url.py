@@ -36,5 +36,7 @@ def get_lab_link(url: str) -> Dict[str, str]:
             "m.hoyolab.com",
         ]:
             continue
-        data[url] = str(parse_link(u))
+        parsed_link = str(parse_link(u))
+        if "article" in parsed_link:
+            data[url] = parsed_link
     return data

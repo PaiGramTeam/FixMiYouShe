@@ -178,12 +178,16 @@ async def process_article_image(
     )
 
 
-async def process_article(game_id: str, post_id: int, i18n: I18n = I18n()) -> str:
+async def get_post_info(game_id: str, post_id: int):
     gids = GAME_ID_MAP.get(game_id)
     if not gids:
         raise ArticleNotFoundError(game_id, post_id)
     async with Hyperion() as hyperion:
-        post_info = await hyperion.get_post_info(gids=gids, post_id=post_id)
+        return await hyperion.get_post_info(gids=gids, post_id=post_id)
+
+
+async def process_article(game_id: str, post_id: int, i18n: I18n = I18n()) -> str:
+    post_info = await get_post_info(game_id, post_id)
     if post_info.view_type in [PostType.TEXT, PostType.VIDEO]:
         content = await process_article_text(post_info, get_recommend_post, i18n)
     elif post_info.view_type == PostType.IMAGE:
