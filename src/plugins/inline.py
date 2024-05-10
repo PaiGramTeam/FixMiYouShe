@@ -11,6 +11,7 @@ from pyrogram.types import (
 
 from .start import get_test_button
 from ..api.bot_request import get_post_info
+from ..api.models import PostInfo
 from ..bot import bot
 from ..utils.url import get_lab_link
 
@@ -45,36 +46,29 @@ def get_notice(message: str) -> InlineQueryResultArticle:
     )
 
 
-async def add_document_results(message: str, url: str) -> List[InlineQueryResult]:
+async def add_document_results(
+    message: str, post_info: PostInfo
+) -> List[InlineQueryResult]:
     result = []
-    try:
-        post_info = await get_post_info(url)
-        if not post_info:
-            raise FileNotFoundError
-    except Exception:
-        return result
     text = f"<b>{post_info.subject}</b>\n\n{message}"[:1000]
-    images = []
-    documents = []
-    for _idx, img in enumerate(post_info.image_urls):
-        idx = _idx + 1
-        images.append(
+    if post_info.image_urls:
+        img = post_info.image_urls[0]
+        result.append(
             InlineQueryResultPhoto(
                 photo_url=img,
-                title=f"图片 {idx}",
-                description=f"发送图片 {idx}",
+                title="图片",
+                description="发送图片",
                 caption=text,
             )
         )
-        documents.append(
+        result.append(
             InlineQueryResultDocument(
                 document_url=img,
-                title=f"原图 {idx}",
-                description=f"发送原图 {idx}",
+                title="原图",
+                description="发送原图",
                 caption=text,
             )
         )
-    result += images + documents
     return result
 
 
@@ -89,11 +83,13 @@ async def inline(_, query: InlineQuery):
             for k, v in replace_list.items():
                 replaced_message = message.replace(k, v)
             results.append(get_article(replaced_message))
-            post_info = await get_post_info(list(replace_list.values())[0])
+            post_info = None
+            try:
+                post_info = await get_post_info(list(replace_list.values())[0])
+            except Exception:
+                pass
             if post_info:
-                files = await add_document_results(
-                    message, list(replace_list.values())[0]
-                )
+                files = await add_document_results(message, post_info)
                 if files:
                     results.append(get_notice(replaced_message))
                     results += files

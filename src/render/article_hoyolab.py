@@ -54,18 +54,18 @@ async def process_article_video(
 
 
 async def get_post_info(post_id: int, lang: str):
+    async with Hoyolab() as hoyolab:
+        return await hoyolab.get_post_info(post_id=post_id, lang=lang)
+
+
+async def process_article(post_id: int, lang: str) -> str:
     try:
         i18n = I18n(i18n_alias.get(lang))
         if not i18n:
             i18n = I18n(lang)
     except ValueError:
         i18n = I18n()
-    async with Hoyolab() as hoyolab:
-        return await hoyolab.get_post_info(post_id=post_id, lang=i18n.lang.value)
-
-
-async def process_article(post_id: int, lang: str) -> str:
-    post_info = await get_post_info(post_id, lang)
+    post_info = await get_post_info(post_id, i18n.lang.value)
     if post_info.view_type == PostType.TEXT:
         content = await process_article_text(post_info, get_recommend_post, i18n)
     elif post_info.view_type == PostType.IMAGE:
