@@ -14,7 +14,7 @@ from ..bot import bot
 from ..utils.url import get_lab_link
 
 
-def get_help_article():
+def get_help_article() -> InlineQueryResultArticle:
     text = f"欢迎使用 @{bot.me.username} 来转换 米游社/HoYoLab 链接，您也可以将 Bot 添加到群组或频道自动匹配消息。"
     return InlineQueryResultArticle(
         title=">> 帮助 <<",
@@ -27,6 +27,16 @@ def get_article(message: str) -> Optional[InlineQueryResultArticle]:
     return InlineQueryResultArticle(
         title=">> 转换结果 <<",
         description="点击发送文本",
+        input_message_content=InputTextMessageContent(
+            message, disable_web_page_preview=False
+        ),
+    )
+
+
+def get_notice(message: str) -> InlineQueryResultArticle:
+    return InlineQueryResultArticle(
+        title=">> 如果没有正确显示图片和原图，请稍后重试 <<",
+        description="服务器请求中，请等待...",
         input_message_content=InputTextMessageContent(
             message, disable_web_page_preview=False
         ),
@@ -79,9 +89,12 @@ async def inline(_, query: InlineQuery):
             results.append(get_article(replaced_message))
             post_info = await get_post_info(list(replace_list.values())[0])
             if post_info:
-                results += await add_document_results(
+                files = await add_document_results(
                     message, list(replace_list.values())[0]
                 )
+                if files:
+                    results.append(get_notice(replaced_message))
+                    results += files
     await query.answer(
         switch_pm_text="🔎 输入 米游社/HoYoLab 链接来转换",
         switch_pm_parameter="start",
