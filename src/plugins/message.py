@@ -1,5 +1,5 @@
 from pyrogram import filters
-from pyrogram.enums import MessageEntityType
+from pyrogram.enums import MessageEntityType, ChatType
 from pyrogram.errors import WebpageNotFound
 from pyrogram.types import Message, MessageEntity
 
@@ -20,26 +20,21 @@ async def _forward_from_bot(_, __, m: Message):
     return m.forward_from and m.forward_from.is_bot
 
 
+async def _forward_in_group(_, __, m: Message):
+    return (
+        m.forward_date
+        and m.chat
+        and m.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]
+    )
+
+
 need_chat = filters.create(_need_chat)
 need_text = filters.create(_need_text)
 forward_from_bot = filters.create(_forward_from_bot)
+forward_in_group = filters.create(_forward_in_group)
 
 
-@bot.on_message(
-    filters=filters.incoming
-    & ~filters.via_bot
-    & need_text
-    & need_chat
-    & ~forward_from_bot,
-    group=1,
-)
-async def process_link(_, message: Message):
-    text = message.text or message.caption
-    markdown_text = text.markdown
-    if not markdown_text:
-        return
-    if markdown_text.startswith("~"):
-        return
+async def process_link_func(markdown_text: str, message: Message):
     links = get_lab_link(markdown_text)
     if not links:
         return
@@ -69,3 +64,43 @@ async def process_link(_, message: Message):
             quote=True,
             entities=entities,
         )
+
+
+@bot.on_message(
+    filters=filters.incoming
+    & ~filters.via_bot
+    & need_text
+    & need_chat
+    & ~forward_from_bot
+    & ~forward_in_group,
+    group=1,
+)
+async def process_link(_, message: Message):
+    text = message.text or message.caption
+    markdown_text = text.markdown
+    if not markdown_text:
+        return
+    if markdown_text.startswith("~"):
+        return
+    await process_link_func(markdown_text, message)
+
+
+@bot.on_message(
+    filters=filters.incoming
+    & filters.command("parse")
+    & ~filters.forwarded
+    & ~filters.via_bot
+    & need_chat,
+    group=2,
+)
+async def parse_reply_link(_, message: Message):
+    reply = message.reply_to_message
+    if not reply:
+        return
+    text = reply.text or reply.caption
+    if not text:
+        return
+    markdown_text = text.markdown
+    if not markdown_text:
+        return
+    await process_link_func(markdown_text, reply)
