@@ -3,14 +3,14 @@ from typing import Optional
 from httpx import AsyncClient
 
 from src.api.models import PostInfo
-from src.env import API_TOKEN
+from src.env import USER_AGENT
 
 client = AsyncClient(
     headers=(
         {
-            "API-TOKEN": API_TOKEN,
+            "User-Agent": USER_AGENT,
         }
-        if API_TOKEN
+        if USER_AGENT
         else {}
     )
 )
