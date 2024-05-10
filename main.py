@@ -1,8 +1,30 @@
 import asyncio
-import uvicorn
 
-from src.app import app
-from src.env import PORT, MIYOUSHE, HOYOLAB
+from signal import signal as signal_fn, SIGINT, SIGTERM, SIGABRT
+
+from src.app import web
+from src.bot import bot
+from src.env import MIYOUSHE, HOYOLAB, BOT
+
+
+async def idle():
+    task = None
+
+    def signal_handler(_, __):
+        if web.web_server_task:
+            web.web_server_task.cancel()
+        task.cancel()
+
+    for s in (SIGINT, SIGTERM, SIGABRT):
+        signal_fn(s, signal_handler)
+
+    while True:
+        task = asyncio.create_task(asyncio.sleep(600))
+        web.bot_main_task = task
+        try:
+            await task
+        except asyncio.CancelledError:
+            break
 
 
 async def main():
@@ -14,14 +36,22 @@ async def main():
         from src.render.article_hoyolab import refresh_hoyo_recommend_posts
 
         await refresh_hoyo_recommend_posts()
-    web_server = uvicorn.Server(config=uvicorn.Config(app, host="0.0.0.0", port=PORT))
-    server_config = web_server.config
-    server_config.setup_event_loop()
-    if not server_config.loaded:
-        server_config.load()
-    web_server.lifespan = server_config.lifespan_class(server_config)
-    await web_server.startup()
-    await web_server.main_loop()
+    await web.start()
+    if BOT:
+        await bot.start()
+    try:
+        await idle()
+    finally:
+        if BOT:
+            try:
+                await bot.stop()
+            except RuntimeError:
+                pass
+        if web.web_server:
+            try:
+                await web.web_server.shutdown()
+            except AttributeError:
+                pass
 
 
 if __name__ == "__main__":
