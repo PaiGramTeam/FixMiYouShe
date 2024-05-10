@@ -23,11 +23,11 @@ def get_recommend_post(post_info: PostInfo, i18n: I18n) -> List[PostRecommend]:
     return [
         PostRecommend(
             post_id=post.post_id,
-            subject=post.multi_language_info.lang_subject.get(
-                i18n.lang.value, post.subject
-            )
-            if post.multi_language_info
-            else post.subject,
+            subject=(
+                post.multi_language_info.lang_subject.get(i18n.lang.value, post.subject)
+                if post.multi_language_info
+                else post.subject
+            ),
         )
         for post in posts
         if post.post_id != post_info.post_id
@@ -53,6 +53,11 @@ async def process_article_video(
     )
 
 
+async def get_post_info(post_id: int, lang: str):
+    async with Hoyolab() as hoyolab:
+        return await hoyolab.get_post_info(post_id=post_id, lang=lang)
+
+
 async def process_article(post_id: int, lang: str) -> str:
     try:
         i18n = I18n(i18n_alias.get(lang))
@@ -60,8 +65,7 @@ async def process_article(post_id: int, lang: str) -> str:
             i18n = I18n(lang)
     except ValueError:
         i18n = I18n()
-    async with Hoyolab() as hoyolab:
-        post_info = await hoyolab.get_post_info(post_id=post_id, lang=i18n.lang.value)
+    post_info = await get_post_info(post_id, i18n.lang.value)
     if post_info.view_type == PostType.TEXT:
         content = await process_article_text(post_info, get_recommend_post, i18n)
     elif post_info.view_type == PostType.IMAGE:
