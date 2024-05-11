@@ -25,6 +25,11 @@ async def _forward_in_group(_, __, m: Message):
         m.forward_date
         and m.chat
         and m.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]
+        and not (
+            m.sender_chat
+            and m.forward_from_chat
+            and m.sender_chat.id == m.forward_from_chat.id
+        )
     )
 
 
@@ -91,7 +96,6 @@ async def process_link(_, message: Message):
     & ~filters.forwarded
     & ~filters.via_bot
     & need_chat,
-    group=2,
 )
 async def parse_reply_link(_, message: Message):
     reply = message.reply_to_message
