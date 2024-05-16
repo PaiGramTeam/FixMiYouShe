@@ -1,0 +1,24 @@
+version: '3'
+services:
+  fixmiyoushe:
+    image: paigramteam/fixmiyoushe:latest
+    container_name: fixmiyoushe
+    restart: always
+    ports:
+      - 127.0.0.1:${PORT}:${PORT}
+    environment:
+      - TZ=Asia/Shanghai
+      - DEBUG=${DEBUG}
+      - DOMAIN=${DOMAIN}
+      - PORT=${PORT}
+      - MIYOUSHE=${MIYOUSHE}
+      - HOYOLAB=${HOYOLAB}
+      - BOT=${BOT}
+      - BOT_API_ID=${BOT_API_ID}
+      - BOT_API_HASH=${BOT_API_HASH}
+      - BOT_TOKEN=${BOT_TOKEN}
+      - MIYOUSHE_HOST=${MIYOUSHE_HOST}
+      - HOYOLAB_HOST=${HOYOLAB_HOST}
+      - USER_AGENT=${USER_AGENT}
+    volumes:
+      - ./data:/usr/app/data

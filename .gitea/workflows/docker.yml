@@ -7,6 +7,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'Dockerfile'
+      - '.gitea/workflows/**'
+      - '**.py'
 
 jobs:
   build:
