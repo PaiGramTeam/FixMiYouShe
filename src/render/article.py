@@ -91,6 +91,8 @@ def parse_tag(tag: Union[Tag, PageElement], post_info: PostInfo) -> str:
     elif tag.name == "div":
         post_text = []
         for tag_ in tag.children:
+            if isinstance(tag_, Tag) and tag_.name == "div" and "ql-image-mask" in tag_["class"]:
+                continue
             if text := parse_tag(tag_, post_info):
                 post_text.append(text)
         return "\n".join(post_text)
