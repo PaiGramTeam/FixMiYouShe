@@ -1,3 +1,5 @@
+from asyncio import sleep
+
 from pyrogram import filters
 from pyrogram.enums import MessageEntityType, ChatType
 from pyrogram.errors import WebpageNotFound
@@ -6,6 +8,8 @@ from pyrogram.types import Message, MessageEntity
 from src.bot import bot
 from src.log import logger
 from src.utils.url import get_lab_link
+
+MAX_LINKS = 4
 
 
 async def _need_chat(_, __, m: Message):
@@ -39,6 +43,30 @@ forward_from_bot = filters.create(_forward_from_bot)
 forward_in_group = filters.create(_forward_in_group)
 
 
+async def process_single_link_func(message: Message, link_text: str):
+    try:
+        await message.reply_web_page(
+            text="",
+            quote=True,
+            url=link_text,
+        )
+    except WebpageNotFound:
+        text = "."
+        entities = [
+            MessageEntity(
+                type=MessageEntityType.TEXT_LINK,
+                offset=0,
+                length=1,
+                url=link_text,
+            )
+        ]
+        await message.reply_text(
+            text=text,
+            quote=True,
+            entities=entities,
+        )
+
+
 async def process_link_func(markdown_text: str, message: Message):
     links = get_lab_link(markdown_text)
     if not links:
@@ -47,28 +75,9 @@ async def process_link_func(markdown_text: str, message: Message):
     logger.info("chat[%s] link_text %s", message.chat.id, link_text)
     if not link_text:
         return
-    try:
-        await message.reply_web_page(
-            text="",
-            quote=True,
-            url=link_text[0],
-        )
-    except WebpageNotFound:
-        text = "." * len(link_text)
-        entities = [
-            MessageEntity(
-                type=MessageEntityType.TEXT_LINK,
-                offset=idx,
-                length=idx + 1,
-                url=i,
-            )
-            for idx, i in enumerate(link_text)
-        ]
-        await message.reply_text(
-            text=text,
-            quote=True,
-            entities=entities,
-        )
+    for link in link_text[:MAX_LINKS]:
+        await process_single_link_func(message, link)
+        await sleep(.5)
 
 
 @bot.on_message(
