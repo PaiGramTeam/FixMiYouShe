@@ -54,6 +54,22 @@ def format_image_url(url: str) -> str:
     return f'<img src="{url}"/>'
 
 
+def exists_image_url(post_info: PostInfo, url: str) -> bool:
+    def get_image_key(_url: str) -> str:
+        # 获取 url 中 / 后面的内容 _ 前面的内容
+        try:
+            return _url.split("/")[-1].split("_")[0]
+        except IndexError:
+            return ""
+
+    if url:
+        old_key = get_image_key(url)
+        for __url in post_info.image_urls:
+            if get_image_key(__url) == old_key:
+                return True
+    return False
+
+
 def parse_tag(tag: Union[Tag, PageElement], post_info: PostInfo) -> str:
     if tag.name == "a":
         href = tag.get("href")
@@ -63,11 +79,7 @@ def parse_tag(tag: Union[Tag, PageElement], post_info: PostInfo) -> str:
             return f'<a href="{href}">{tag.get_text()}</a>'
     elif tag.name == "img":
         src = clean_url(tag.get("src"))
-        if (
-            src
-            and ("upload-bbs.miyoushe.com" in src or "upload-os-bbs.hoyolab.com" in src)
-            and src in post_info.image_urls
-        ):
+        if exists_image_url(post_info, src):
             return format_image_url(src)
         return ""
     elif tag.name in ["h1", "h2", "h3", "h4", "h5", "h6"]:
@@ -91,7 +103,11 @@ def parse_tag(tag: Union[Tag, PageElement], post_info: PostInfo) -> str:
     elif tag.name == "div":
         post_text = []
         for tag_ in tag.children:
-            if isinstance(tag_, Tag) and tag_.name == "div" and "ql-image-mask" in tag_["class"]:
+            if (
+                isinstance(tag_, Tag)
+                and tag_.name == "div"
+                and "ql-image-mask" in tag_["class"]
+            ):
                 continue
             if text := parse_tag(tag_, post_info):
                 post_text.append(text)
@@ -99,11 +115,23 @@ def parse_tag(tag: Union[Tag, PageElement], post_info: PostInfo) -> str:
     return replace_br(tag.get_text().strip())
 
 
-def parse_content(soup: BeautifulSoup, post_info: PostInfo) -> str:
-    post_text = f"<h1>{post_info.subject}</h1>\n"
+def parse_content_pre(_: BeautifulSoup, post_info: PostInfo) -> str:
+    post_text = ""
+
+    if post_info.has_cover and post_info.cover:
+        post_text += format_image_url(post_info.cover) + "\n"
+
+    post_text += f"<h1>{post_info.subject}</h1>\n"
+
     if post_info.video_urls:
         for url in post_info.video_urls:
             post_text += f'<video controls="controls" src="{url}"></video>\n'
+
+    return post_text
+
+
+def parse_content(soup: BeautifulSoup, post_info: PostInfo) -> str:
+    post_text = parse_content_pre(soup, post_info)
     for tag in soup.find("body").children:
         if text := parse_tag(tag, post_info):
             post_text += f"{text}\n"

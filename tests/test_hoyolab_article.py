@@ -14,10 +14,22 @@ class TestHoyolabArticle:
         content = await process_article(21097937, lang="zh")
         assert content is not None
         assert "【有奖活动】枫丹冒险之旅，参与赢原石等奖励" in content
-        assert (
-            "2023/08/22/cabb57e3aab8e212c035ee5dcca79540_7635259955618222979" in content
-        )
+        assert "2023/08/22/cabb57e3aab8e212c035ee5dcca79540" in content
         assert "参与资格（仅针对现金奖励）" in content
+
+    @staticmethod
+    async def test_get_hoyo_article_text_image():
+        content = await process_article(30373160, lang="zh")
+        assert content is not None
+        assert "2024/06/26/e8f01c57b1444f41ff661697d82eb142" in content
+        assert "「纺坠终久之梦」系列壁纸现已上架！" in content
+
+    @staticmethod
+    async def test_get_hoyo_article_text_cover():
+        content = await process_article(30382861, lang="zh")
+        assert content is not None
+        assert "<!-- article content -->\n    <img src" in content
+        assert "【菲林奖励】绝区零即将上线，参与前瞻直播讨论赢菲林！" in content
 
     @staticmethod
     async def test_get_hoyo_lang_article():

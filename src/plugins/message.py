@@ -77,7 +77,7 @@ async def process_link_func(markdown_text: str, message: Message):
         return
     for link in link_text[:MAX_LINKS]:
         await process_single_link_func(message, link)
-        await sleep(.5)
+        await sleep(0.5)
 
 
 @bot.on_message(

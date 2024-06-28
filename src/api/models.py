@@ -111,6 +111,7 @@ class PostInfo(BaseModel):
     video_urls: List[str]
     content: str
     cover: Optional[str]
+    has_cover: Optional[bool] = False
     game_id: int
     topics: List[PostTopic]
     view_type: PostType
@@ -191,6 +192,7 @@ class PostInfo(BaseModel):
         ):
             content = PostInfo.parse_structured_content(json.loads(structured_content))
         cover = post["cover"]
+        has_cover = post.get("has_cover", False)
         cover_list = _data_post.get("cover_list", [])
         if (not cover) and cover_list:
             cover = cover_list[0]["url"]
@@ -221,6 +223,7 @@ class PostInfo(BaseModel):
             created_at=created_at,
             content=content,
             cover=cover,
+            has_cover=has_cover,
             game_id=game_id,
             topics=topics,
             view_type=view_type,

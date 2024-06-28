@@ -3,23 +3,23 @@
         {
             "id": "2",
             "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2023/11/08/9db76fb146f82c045bc276956f86e047_6878380451593228482.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/04/22/77b5112a9c554e32a52ea5bae092b88b_4884704048190391064.jpg",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/05/30/45f550e5d5bf4f216011450466453a74_2229377313645390599.jpg?x-oss-process=image%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_70",
             "name": "原神",
-            "bg_color": "#203852",
+            "bg_color": "#9DAF77",
             "focus_channel_id": "30"
         },
         {
             "id": "6",
-            "icon": "https://webstatic-sea.hoyolab.com/communityweb/business/starrail_hoyoverse.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/05/11/ba42496135bd7d21433c2edfc8193696_879130898720120555.jpg",
+            "icon": "https://hyl-static-res-prod.hoyolab.com/communityweb/business/starrail_hoyoverse.png",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/06/07/97ff3a94b16fc6623851731407eefff1_3539500584346988147.jpg?x-oss-process=image%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_70",
             "name": "崩坏：星穹铁道",
-            "bg_color": "#4E3EC0",
+            "bg_color": "#5D0AC9",
             "focus_channel_id": "42"
         },
         {
             "id": "8",
-            "icon": "https://webstatic-sea.hoyolab.com/communityweb/business/nap.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/03/14/5954031fdaa7605823671807d5784637_5991613770476069848.jpg",
+            "icon": "https://hyl-static-res-prod.hoyolab.com/communityweb/business/nap.png",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/06/28/1f817e30accd6c117aba10760c52552f_1609948843932447239.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "绝区零",
             "bg_color": "#F5F6FB",
             "focus_channel_id": "46"
@@ -27,14 +27,14 @@
         {
             "id": "1",
             "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2024/02/29/3d96534fd7a35a725f7884e6137346d1_3942255444511793944.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/05/06/21a02ff136818aaf7359d38f59b29193_1656723357122759447.jpg",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/06/04/28e9275e92f4362d4909770009304971_5774434829021569250.jpg?x-oss-process=image%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_70",
             "name": "Honkai Impact 3rd",
-            "bg_color": "#652273",
+            "bg_color": "#0A2966",
             "focus_channel_id": "0"
         },
         {
             "id": "4",
-            "icon": "https://webstatic-sea.hoyolab.com/communityweb/business/nxx_hoyoverse.png",
+            "icon": "https://hyl-static-res-prod.hoyolab.com/communityweb/business/nxx_hoyoverse.png",
             "bg": "https://upload-os-bbs.hoyolab.com/upload/2023/10/24/d97b3eb5763dba18bc137929ce53ba24_8118580296436267822.png",
             "name": "未定事件簿",
             "bg_color": "#2E3857",
