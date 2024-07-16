@@ -95,6 +95,12 @@ class HoYoPostVideo(BaseModel):
     def is_youtube(self) -> bool:
         return "www.youtube.com" in self.url
 
+    @property
+    def html(self) -> str:
+        if self.is_youtube:
+            return f'<iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" border="0" frameborder="0" framespacing="0" scrolling="no" src="{self.url}"></iframe>\n'
+        return f'<video controls src="{self.url}"></video>\n'
+
 
 class HoYoPostMultiLang(BaseModel):
     lang_subject: dict

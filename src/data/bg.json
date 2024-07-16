@@ -35,9 +35,9 @@
         {
             "id": "4",
             "icon": "https://hyl-static-res-prod.hoyolab.com/communityweb/business/nxx_hoyoverse.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2023/10/24/d97b3eb5763dba18bc137929ce53ba24_8118580296436267822.png",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2024/07/12/6884e4a2d1200dac51ac55391b377a74_8800404318031699849.png?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "未定事件簿",
-            "bg_color": "#2E3857",
+            "bg_color": "#1D1D1F",
             "focus_channel_id": "0"
         },
         {

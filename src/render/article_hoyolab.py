@@ -42,8 +42,8 @@ async def process_article_video(
     json_data = json.loads(post_info.content)
     description = json_data.get("describe", "")
     article = ""
-    if post_info.video and post_info.video.is_youtube:
-        article += f'<iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" border="0" frameborder="0" framespacing="0" scrolling="no" src="{post_info.video.url}"></iframe>\n'
+    if post_info.video:
+        article += post_info.video.html
     if description:
         article += f"<p>{description}</p>\n"
     return template.render(
