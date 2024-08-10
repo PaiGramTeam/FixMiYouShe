@@ -12,6 +12,7 @@ from src.api.models import (
     PostType,
     PostRecommend,
     CHANNEL_MAP,
+    CHANNEL_OS_MAP,
     GAME_ID_MAP,
     get_images_params,
     clean_url,
@@ -162,9 +163,10 @@ def get_public_data(
     related_posts: Callable[[PostInfo, I18n], List[PostRecommend]],
     i18n: I18n,
 ) -> Dict:
+    channel_map = CHANNEL_OS_MAP if post_info.hoyolab else CHANNEL_MAP
     return {
         "published_time": post_info.created_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
-        "channel": CHANNEL_MAP.get(post_info.game_id_str, "HSRCN"),
+        "channel": channel_map.get(post_info.game_id_str, "HSRCN"),
         "stat": parse_stat(post_info.stat),
         "post": post_info,
         "author": post_info["post"]["user"],

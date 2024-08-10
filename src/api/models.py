@@ -6,12 +6,14 @@ from typing import Any, List, Optional, Dict
 from pydantic import BaseModel, PrivateAttr, Field, AliasChoices
 
 GAME_ID_MAP = {"bh3": 1, "ys": 2, "bh2": 3, "wd": 4, "dby": 5, "sr": 6, "zzz": 8}
-GAME_STR_MAP = {1: "bh3", 2: "ys", 3: "bh2", 4: "wd", 5: "dby", 6: "sr", 8: "zzz"}
+GAME_STR_MAP = {v: k for k, v in GAME_ID_MAP.items()}
 CHANNEL_MAP = {"ys": "yuanshen", "sr": "HSRCN", "zzz": "ZZZ_Game"}
+CHANNEL_OS_MAP = {"ys": "GenshinOverseas", "sr": "HSRCN", "zzz": "ZZZ_Game"}
 __all__ = (
     "GAME_ID_MAP",
     "GAME_STR_MAP",
     "CHANNEL_MAP",
+    "CHANNEL_OS_MAP",
     "clean_url",
     "get_images_params",
     "PostStat",
