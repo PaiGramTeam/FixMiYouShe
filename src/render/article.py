@@ -18,10 +18,9 @@ from src.api.models import (
     clean_url,
 )
 from src.data.get_bg import BG_MAP
-from src.env import DOMAIN, MIYOUSHE
+from src.env import DOMAIN
 from src.error import ArticleNotFoundError
 from src.log import logger
-from src.services.scheduler import scheduler
 
 RECOMMEND_POST_MAP: Dict[str, List[PostRecommend]] = {}
 template = template_env.get_template("article.jinja2")
@@ -227,17 +226,14 @@ async def process_article(game_id: str, post_id: int, i18n: I18n = I18n()) -> st
     return content  # noqa
 
 
-if MIYOUSHE:
-
-    @scheduler.scheduled_job("cron", minute="0", second="10")
-    async def refresh_recommend_posts():
-        logger.info("Start to refresh recommend posts")
-        async with Hyperion() as hyperion:
-            for key, gids in GAME_ID_MAP.items():
-                try:
-                    RECOMMEND_POST_MAP[key] = (
-                        await hyperion.get_official_recommended_posts(gids)
-                    )
-                except Exception as _:
-                    logger.exception(f"Failed to get recommend posts gids={gids}")
-        logger.info("Finish to refresh recommend posts")
+async def refresh_recommend_posts():
+    logger.info("Start to refresh recommend posts")
+    async with Hyperion() as hyperion:
+        for key, gids in GAME_ID_MAP.items():
+            try:
+                RECOMMEND_POST_MAP[key] = await hyperion.get_official_recommended_posts(
+                    gids
+                )
+            except Exception as _:
+                logger.exception(f"Failed to get recommend posts gids={gids}")
+    logger.info("Finish to refresh recommend posts")

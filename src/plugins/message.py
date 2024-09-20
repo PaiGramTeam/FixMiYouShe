@@ -1,11 +1,12 @@
 from asyncio import sleep
 
+from persica.factory.component import BaseComponent
 from pyrogram import filters
 from pyrogram.enums import MessageEntityType, ChatType
 from pyrogram.errors import WebpageNotFound
 from pyrogram.types import Message, MessageEntity
 
-from src.bot import bot
+from src.core.bot import TelegramBot
 from src.log import logger
 from src.utils.url import get_lab_link
 
@@ -80,15 +81,6 @@ async def process_link_func(markdown_text: str, message: Message):
         await sleep(0.5)
 
 
-@bot.on_message(
-    filters=filters.incoming
-    & ~filters.via_bot
-    & need_text
-    & need_chat
-    & ~forward_from_bot
-    & ~forward_in_group,
-    group=1,
-)
 async def process_link(_, message: Message):
     text = message.text or message.caption
     markdown_text = text.markdown
@@ -99,13 +91,6 @@ async def process_link(_, message: Message):
     await process_link_func(markdown_text, message)
 
 
-@bot.on_message(
-    filters=filters.incoming
-    & filters.command("parse")
-    & ~filters.forwarded
-    & ~filters.via_bot
-    & need_chat,
-)
 async def parse_reply_link(_, message: Message):
     reply = message.reply_to_message
     if not reply:
@@ -117,3 +102,28 @@ async def parse_reply_link(_, message: Message):
     if not markdown_text:
         return
     await process_link_func(markdown_text, reply)
+
+
+class MessageBotPlugin(BaseComponent):
+    def __init__(self, telegram_bot: TelegramBot):
+        @telegram_bot.bot.on_message(
+            filters=filters.incoming
+            & ~filters.via_bot
+            & need_text
+            & need_chat
+            & ~forward_from_bot
+            & ~forward_in_group,
+            group=1,
+        )
+        async def _process_link(_, message: Message):
+            await process_link(_, message)
+
+        @telegram_bot.bot.on_message(
+            filters=filters.incoming
+            & filters.command("parse")
+            & ~filters.forwarded
+            & ~filters.via_bot
+            & need_chat,
+        )
+        async def _parse_reply_link(_, message: Message):
+            await parse_reply_link(_, message)

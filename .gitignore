@@ -163,3 +163,4 @@ cython_debug/
 cache/
 data/
 docker-compose.yml
+.pdm-python

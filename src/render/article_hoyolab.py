@@ -4,7 +4,6 @@ from typing import Dict, List, Callable
 from src.api.hoyolab import Hoyolab
 from src.api.i18n import I18n, i18n_alias
 from src.api.models import PostRecommend, PostType, PostInfo
-from src.env import HOYOLAB
 from src.log import logger
 from src.render.article import (
     process_article_text,
@@ -12,7 +11,6 @@ from src.render.article import (
     template,
     get_public_data,
 )
-from src.services.scheduler import scheduler
 
 GAME_ID_MAP = {"bh3": 1, "ys": 2, "wd": 4, "dby": 5, "sr": 6, "zzz": 8}
 RECOMMEND_POST_MAP: Dict[int, List[PostRecommend]] = {}
@@ -75,20 +73,17 @@ async def process_article(post_id: int, lang: str) -> str:
     return content  # noqa
 
 
-if HOYOLAB:
-
-    @scheduler.scheduled_job("cron", minute="0", second="10")
-    async def refresh_hoyo_recommend_posts():
-        logger.info("Start to refresh hoyolab recommend posts")
-        async with Hoyolab() as hoyolab:
-            for gids in GAME_ID_MAP.values():
-                temp = []
-                for k in (1, 2, 3):
-                    try:
-                        temp.extend(await hoyolab.get_news_recommend(gids, type_=k))
-                    except Exception as _:
-                        logger.exception(
-                            f"Failed to get recommend posts gids={gids} type={k}"
-                        )
-                RECOMMEND_POST_MAP[gids] = temp
-        logger.info("Finish to refresh hoyolab recommend posts")
+async def refresh_hoyo_recommend_posts():
+    logger.info("Start to refresh hoyolab recommend posts")
+    async with Hoyolab() as hoyolab:
+        for gids in GAME_ID_MAP.values():
+            temp = []
+            for k in (1, 2, 3):
+                try:
+                    temp.extend(await hoyolab.get_news_recommend(gids, type_=k))
+                except Exception as _:
+                    logger.exception(
+                        f"Failed to get recommend posts gids={gids} type={k}"
+                    )
+            RECOMMEND_POST_MAP[gids] = temp
+    logger.info("Finish to refresh hoyolab recommend posts")

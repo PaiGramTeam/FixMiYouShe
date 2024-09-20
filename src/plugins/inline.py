@@ -1,5 +1,7 @@
 from typing import List, Optional
 
+from persica.factory.component import BaseComponent
+from pyrogram import Client
 from pyrogram.types import (
     InputTextMessageContent,
     InlineQueryResultArticle,
@@ -9,14 +11,14 @@ from pyrogram.types import (
     InlineQueryResultDocument,
 )
 
+from src.core.bot import TelegramBot
 from .start import get_test_button
 from ..api.bot_request import get_post_info
 from ..api.models import PostInfo
-from ..bot import bot
 from ..utils.url import get_lab_link
 
 
-def get_help_article() -> InlineQueryResultArticle:
+def get_help_article(bot: Client) -> InlineQueryResultArticle:
     text = f"欢迎使用 @{bot.me.username} 来转换 米游社/HoYoLab 链接，您也可以将 Bot 添加到群组或频道自动匹配消息。"
     return InlineQueryResultArticle(
         title=">> 帮助 <<",
@@ -72,10 +74,9 @@ async def add_document_results(
     return result
 
 
-@bot.on_inline_query()
-async def inline(_, query: InlineQuery):
+async def inline(bot: Client, query: InlineQuery):
     message = query.query
-    results = [get_help_article()]
+    results = [get_help_article(bot)]
     if message:
         replace_list = get_lab_link(message)
         if replace_list:
@@ -98,3 +99,10 @@ async def inline(_, query: InlineQuery):
         switch_pm_parameter="start",
         results=results,
     )
+
+
+class InlineBotPlugin(BaseComponent):
+    def __init__(self, telegram_bot: TelegramBot):
+        @telegram_bot.bot.on_inline_query()
+        async def inline_query(_, query: InlineQuery):
+            await inline(_, query)
