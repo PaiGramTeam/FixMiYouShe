@@ -22,7 +22,7 @@ dependencies = [
     "PyroTgCrypto>=1.2.7",
     "pyrogram @ git+https://github.com/TeamPGM/pyrogram",
     "urlextract",
-    "persica @ git+https://github.com/luoshuijs/Persica@dev",
+    "persica @ git+https://github.com/luoshuijs/Persica",
 ]
 requires-python = ">=3.10"
 readme = "README.md"

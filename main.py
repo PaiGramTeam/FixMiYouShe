@@ -6,11 +6,9 @@ def main():
     app = (
         ApplicationBuilder()
         .set_application_context_class(ApplicationContext)
-        .set_scanner_packages("src/core")
+        .set_scanner_packages(["src.core", "src.plugins", "src.route"])
         .build()
     )
-    app.class_scanner.flash("src/plugins")
-    app.class_scanner.flash("src/route")
     app.run()
 
 
