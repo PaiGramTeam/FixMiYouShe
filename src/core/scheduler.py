@@ -5,7 +5,7 @@ from persica.factory.component import BaseComponent
 
 class TimeScheduler(BaseComponent):
     def __init__(self):
-        self.scheduler = AsyncIOScheduler(timezone="Asia/ShangHai")
+        self.scheduler = AsyncIOScheduler(timezone="Asia/Shanghai")
 
     def register_scheduler(self, app: "FastAPI"):
         @app.on_event("startup")
