@@ -3,7 +3,6 @@ from asyncio import sleep
 from persica.factory.component import BaseComponent
 from pyrogram import filters
 from pyrogram.enums import MessageEntityType, ChatType
-from pyrogram.errors import WebpageNotFound
 from pyrogram.types import Message, MessageEntity
 
 from src.core.bot import TelegramBot
@@ -45,27 +44,20 @@ forward_in_group = filters.create(_forward_in_group)
 
 
 async def process_single_link_func(message: Message, link_text: str):
-    try:
-        await message.reply_web_page(
-            text="",
-            quote=True,
+    text = "."
+    entities = [
+        MessageEntity(
+            type=MessageEntityType.TEXT_LINK,
+            offset=0,
+            length=1,
             url=link_text,
         )
-    except WebpageNotFound:
-        text = "."
-        entities = [
-            MessageEntity(
-                type=MessageEntityType.TEXT_LINK,
-                offset=0,
-                length=1,
-                url=link_text,
-            )
-        ]
-        await message.reply_text(
-            text=text,
-            quote=True,
-            entities=entities,
-        )
+    ]
+    await message.reply_text(
+        text=text,
+        quote=True,
+        entities=entities,
+    )
 
 
 async def process_link_func(markdown_text: str, message: Message):
