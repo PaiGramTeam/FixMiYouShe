@@ -3,7 +3,7 @@ from typing import Dict, List, Callable
 
 from src.api.hoyolab import Hoyolab
 from src.api.i18n import I18n, i18n_alias
-from src.api.models import PostRecommend, PostType, PostInfo
+from src.api.models import PostRecommend, PostType, PostInfo, GAME_ID_MAP
 from src.log import logger
 from src.render.article import (
     process_article_text,
@@ -12,7 +12,6 @@ from src.render.article import (
     get_public_data,
 )
 
-GAME_ID_MAP = {"bh3": 1, "ys": 2, "wd": 4, "dby": 5, "sr": 6, "zzz": 8}
 RECOMMEND_POST_MAP: Dict[int, List[PostRecommend]] = {}
 
 
