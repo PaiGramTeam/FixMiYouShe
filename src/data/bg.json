@@ -2,15 +2,15 @@
     "game_list": [
         {
             "id": "2",
-            "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2023/11/08/9db76fb146f82c045bc276956f86e047_6878380451593228482.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2025/07/28/b9a163366e3771c47844089128cb70e0_6164011518401364018.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
+            "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/09/10/a8a2b189a6c760bc80d50b38858a1999_633768978567625285.png",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2025/09/09/1d8d018221e30bf9ec1cd0705a8f94fc_2323872757771345321.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "原神",
             "bg_color": "#20346F",
             "focus_channel_id": "30"
         },
         {
             "id": "6",
-            "icon": "https://hyl-static-res-prod.hoyolab.com/communityweb/business/starrail_hoyoverse.png",
+            "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/09/24/de09aa694c26b87448cf03af683e3109_6737621355140099473.jpg",
             "bg": "https://upload-os-bbs.hoyolab.com/upload/2025/08/13/a892c0205b4dc3ca73407797b0c9e3e6_4498542788672282449.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "崩坏：星穹铁道",
             "bg_color": "#16161C",
@@ -19,7 +19,7 @@
         {
             "id": "8",
             "icon": "https://hyl-static-res-prod.hoyolab.com/communityweb/business/nap.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2025/07/15/2cbf289ed265f3e5f5fefb01164b3994_819034657396188145.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2025/09/03/816737edb64df6f3669a6e4f18236c3f_906830961023803267.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "绝区零",
             "bg_color": "#F5F6FB",
             "focus_channel_id": "46"
@@ -39,6 +39,14 @@
             "name": "未定事件簿",
             "bg_color": "#2E3857",
             "focus_channel_id": "38"
+        },
+        {
+            "id": "10",
+            "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/09/24/aada3336beaad91e73997f6648a80e54_8862525620124846948.png",
+            "bg": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/09/24/719d1624da6ad8acee27b50f2cbf45d1_114691005128480559.jpg",
+            "name": "Petit Planet",
+            "bg_color": "#0d1933",
+            "focus_channel_id": "100001"
         },
         {
             "id": "9",

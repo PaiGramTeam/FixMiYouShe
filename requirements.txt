@@ -4,7 +4,7 @@ aiofiles==24.1.0
     # via fixmiyoushe
 annotated-types==0.7.0
     # via pydantic
-anyio==4.10.0
+anyio==4.11.0
     # via
     #   httpx
     #   starlette
@@ -18,7 +18,7 @@ certifi==2025.8.3
     # via
     #   httpcore
     #   httpx
-click==8.2.1
+click==8.3.0
     # via uvicorn
 colorama==0.4.6 ; sys_platform == 'win32'
     # via
@@ -30,7 +30,7 @@ exceptiongroup==1.3.0 ; python_full_version < '3.11'
     # via
     #   anyio
     #   pytest
-fastapi==0.116.1
+fastapi==0.117.1
     # via fixmiyoushe
 filelock==3.19.1
     # via urlextract
@@ -53,7 +53,7 @@ iniconfig==2.1.0
     # via pytest
 jinja2==3.1.6
     # via fixmiyoushe
-lxml==6.0.1
+lxml==6.0.2
     # via fixmiyoushe
 markupsafe==3.0.2
     # via jinja2
@@ -71,7 +71,7 @@ pluggy==1.6.0
     # via pytest
 pyaes==1.6.1
     # via pyrogram
-pydantic==2.11.7
+pydantic==2.11.9
     # via
     #   fastapi
     #   fixmiyoushe
@@ -81,15 +81,15 @@ pygments==2.19.2
     # via pytest
 pyreadline3==3.5.4 ; sys_platform == 'win32'
     # via humanfriendly
-pyrogram @ git+https://github.com/TeamPGM/pyrogram@92a132f69198ad8b3e11491644019cf2aea4677f
+pyrogram @ git+https://github.com/TeamPGM/pyrogram@799a9c684bf808b95b6090d90307fe8653ef7819
     # via fixmiyoushe
 pyrotgcrypto==1.2.7
     # via fixmiyoushe
 pysocks==1.7.1
     # via pyrogram
-pytest==8.4.1
+pytest==8.4.2
     # via pytest-asyncio
-pytest-asyncio==1.1.0
+pytest-asyncio==1.2.0
 python-dotenv==1.1.1
     # via fixmiyoushe
 pytz==2025.2
@@ -98,7 +98,7 @@ sniffio==1.3.1
     # via anyio
 soupsieve==2.8
     # via beautifulsoup4
-starlette==0.47.3
+starlette==0.48.0
     # via
     #   fastapi
     #   fixmiyoushe
@@ -112,6 +112,7 @@ typing-extensions==4.15.0
     #   fastapi
     #   pydantic
     #   pydantic-core
+    #   pytest-asyncio
     #   starlette
     #   typing-inspection
     #   uvicorn
@@ -125,5 +126,5 @@ uritools==5.0.0
     # via urlextract
 urlextract==1.9.0
     # via fixmiyoushe
-uvicorn==0.35.0
+uvicorn==0.37.0
     # via fixmiyoushe
