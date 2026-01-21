@@ -1,7 +1,13 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 from pydantic import BaseModel
+
+from src import template_env
+from src.api.skland.models import PostInfo as SklandPostInfo
 from src.api.models import PostInfo, PostType, PostRecommend
+
+template = template_env.get_template("article.jinja2")
+template_skland = template_env.get_template("article_skland.jinja2")
 
 
 class RenderTemplateData(BaseModel):
@@ -15,7 +21,7 @@ class RenderTemplateData(BaseModel):
     published_time: str
     channel: str
     stat: str
-    post: PostInfo
+    post: PostInfo | SklandPostInfo
     author: Dict[str, Any]
     related_posts: List[PostRecommend]
     GAME_BG: str
@@ -118,7 +124,7 @@ class RenderData(ABC):
         pass
 
 
-class BaseRenderData(RenderData):
+class BaseRenderData(RenderData, ABC):
     """
     基础RenderData实现，提供通用的数据处理逻辑
     适用于大多数平台的基础渲染需求
@@ -153,30 +159,3 @@ class BaseRenderData(RenderData):
             PostType: 文章类型
         """
         return self._post_info.view_type
-
-
-class HoyolabRenderData(BaseRenderData):
-    """
-    米游社(hoyolab)平台的RenderData实现
-    扩展了BaseRenderData，添加了米游社特定的数据处理逻辑
-    """
-
-    def __init__(self, post_info: PostInfo, i18n, related_posts_func):
-        """
-        初始化HoyolabRenderData实例
-
-        Args:
-            post_info: 原始文章信息对象
-            i18n: 国际化对象
-            related_posts_func: 获取相关文章的函数
-        """
-        super().__init__(post_info, i18n)
-        self._related_posts_func = related_posts_func
-
-    def process(self) -> None:
-        """
-        处理米游社特定数据
-        """
-        super().process()
-        # 可以在这里添加米游社特定的数据处理逻辑
-        pass

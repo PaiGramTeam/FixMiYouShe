@@ -23,6 +23,7 @@ dependencies = [
     "pyrogram @ git+https://github.com/TeamPGM/pyrogram",
     "urlextract",
     "persica @ git+https://github.com/luoshuijs/Persica",
+    "pycryptodome>=3.23.0",
 ]
 requires-python = ">=3.10"
 readme = "README.md"

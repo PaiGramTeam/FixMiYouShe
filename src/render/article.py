@@ -3,7 +3,6 @@ from typing import List, Dict, Callable
 
 from bs4 import BeautifulSoup
 
-from src import template_env
 from src.api.hyperion import Hyperion
 from src.api.i18n import I18n
 from src.api.models import (
@@ -18,7 +17,7 @@ from src.data.get_bg import BG_MAP
 from src.env import DOMAIN
 from src.error import ArticleNotFoundError
 from src.log import logger
-from src.render.render_data import RenderTemplateData, BaseRenderData
+from src.render.render_data import RenderTemplateData, BaseRenderData, template
 from src.utils.common import (
     get_description,
     parse_content,
@@ -26,7 +25,6 @@ from src.utils.common import (
     format_image_url,
 )
 
-template = template_env.get_template("article.jinja2")
 RECOMMEND_POST_MAP: Dict[str, List[PostRecommend]] = {}
 
 

@@ -3,7 +3,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, List, Optional, Dict
 
-from pydantic import BaseModel, PrivateAttr, Field, AliasChoices
+from pydantic import BaseModel, PrivateAttr, Field, AliasChoices, computed_field
 
 GAME_ID_MAP = {
     "bh3": 1,
@@ -95,7 +95,7 @@ class PostTopic(BaseModel):
     game_id_: int
     hoyolab: bool
 
-    @property
+    @computed_field
     def url(self) -> str:
         if not self.hoyolab:
             return f"https://www.miyoushe.com/{self.game_id_}/topicDetail/{self.id}"
@@ -115,11 +115,11 @@ class HoYoPostVideo(BaseModel):
     cover: Optional[str]
     url: str
 
-    @property
+    @computed_field
     def is_youtube(self) -> bool:
         return "www.youtube.com" in self.url
 
-    @property
+    @computed_field
     def html(self) -> str:
         if self.is_youtube:
             return f'<iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" border="0" frameborder="0" framespacing="0" scrolling="no" src="{self.url}"></iframe>\n'
@@ -152,27 +152,27 @@ class PostInfo(BaseModel):
         super().__init__(**data)
         self._data = _data
 
-    @property
+    @computed_field
     def game_id_str(self) -> str:
         return GAME_STR_MAP.get(self.game_id, "")
 
-    @property
+    @computed_field
     def url_start(self) -> str:
         if not self.hoyolab:
             return f"{self.game_id_str}/article"
         return "article"
 
-    @property
+    @computed_field
     def url_path(self) -> str:
         return f"{self.url_start}/{self.post_id}"
 
-    @property
+    @computed_field
     def url(self) -> str:
         if not self.hoyolab:
             return f"https://www.miyoushe.com/{self.url_path}"
         return f"https://www.hoyolab.com/{self.url_path}"
 
-    @property
+    @computed_field
     def author_url(self) -> str:
         author = self._data["post"]["user"]
         if not self.hoyolab:
@@ -271,6 +271,13 @@ class PostRecommend(BaseModel):
     banner: Optional[str] = None
     official_type: Optional[int] = None
     multi_language_info: Optional[HoYoPostMultiLang] = None
+
+    @staticmethod
+    def parse_skland(data: Dict):
+        _post = data.get("item")
+        post_id = _post.get("id")
+        subject = _post.get("title", "")
+        return PostRecommend(post_id=post_id, subject=subject)
 
 
 class GameListItem(BaseModel):

@@ -3,12 +3,11 @@ from typing import Dict, List, Callable
 
 from bs4 import BeautifulSoup
 
-from src import template_env
 from src.api.hoyolab import Hoyolab
 from src.api.i18n import I18n, i18n_alias
 from src.api.models import PostRecommend, PostType, PostInfo, GAME_ID_MAP
 from src.log import logger
-from src.render.render_data import RenderTemplateData, BaseRenderData
+from src.render.render_data import RenderTemplateData, BaseRenderData, template
 from src.utils.common import (
     get_description,
     parse_content,
@@ -18,8 +17,6 @@ from src.utils.common import (
 from src.data.get_bg import BG_MAP
 from src.env import DOMAIN
 from src.api.models import CHANNEL_MAP, CHANNEL_OS_MAP
-
-template = template_env.get_template("article.jinja2")
 
 RECOMMEND_POST_MAP: Dict[int, List[PostRecommend]] = {}
 

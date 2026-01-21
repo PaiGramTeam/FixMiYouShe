@@ -34,7 +34,7 @@ exceptiongroup==1.3.1 ; python_full_version < '3.11'
     #   pytest
 fastapi==0.128.0
     # via fixmiyoushe
-filelock==3.20.2
+filelock==3.20.3
     # via urlextract
 h11==0.16.0
     # via
@@ -65,7 +65,7 @@ networkx==3.6.1 ; python_full_version >= '3.11'
     # via persica
 packaging==25.0
     # via pytest
-persica @ git+https://github.com/luoshuijs/Persica@1b80170e00027041b76f1e697610b04c1a10b014
+persica @ git+https://github.com/luoshuijs/Persica@69f42d24dc2053f03677d35700f6045c94fe3d19
     # via fixmiyoushe
 platformdirs==4.5.1
     # via urlextract
@@ -73,6 +73,8 @@ pluggy==1.6.0
     # via pytest
 pyaes==1.6.1
     # via pyrogram
+pycryptodome==3.23.0
+    # via fixmiyoushe
 pydantic==2.12.5
     # via
     #   fastapi
@@ -83,7 +85,7 @@ pygments==2.19.2
     # via pytest
 pyreadline3==3.5.4 ; sys_platform == 'win32'
     # via humanfriendly
-pyrogram @ git+https://github.com/TeamPGM/pyrogram@7b9627fec2276266083a0367036f739874b93bad
+pyrogram @ git+https://github.com/TeamPGM/pyrogram@323afd2a8a243dbbdac90b83e9bab090037f2898
     # via fixmiyoushe
 pyrotgcrypto==1.2.7
     # via fixmiyoushe
@@ -96,13 +98,14 @@ python-dotenv==1.2.1
     # via fixmiyoushe
 pytz==2025.2
     # via fixmiyoushe
-soupsieve==2.8.1
+ruff==0.14.13
+soupsieve==2.8.3
     # via beautifulsoup4
 starlette==0.50.0
     # via
     #   fastapi
     #   fixmiyoushe
-tomli==2.3.0 ; python_full_version < '3.11'
+tomli==2.4.0 ; python_full_version < '3.11'
     # via pytest
 typing-extensions==4.15.0
     # via
