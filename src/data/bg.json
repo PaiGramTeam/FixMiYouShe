@@ -3,15 +3,15 @@
         {
             "id": "2",
             "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2023/11/08/9db76fb146f82c045bc276956f86e047_6878380451593228482.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/01/12/511f3781f9f8a4bdcb3be89f70a66319_6678570408998776781.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/07/01/71a91345525e0b8a501e7870b6c4e7fa_449896914667580399.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "原神",
-            "bg_color": "#1B2552",
+            "bg_color": "#022E66",
             "focus_channel_id": "30"
         },
         {
             "id": "6",
             "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/09/24/de09aa694c26b87448cf03af683e3109_6737621355140099473.jpg",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2025/12/16/ab555e01923c00e15e532705373e7e92_9082588059978877558.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/07/01/c95840183a47c90fe6cabdad3be71e9b_8774841947772697962.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "崩坏：星穹铁道",
             "bg_color": "#16161C",
             "focus_channel_id": "42"
@@ -19,7 +19,7 @@
         {
             "id": "8",
             "icon": "https://hyl-static-res-prod.hoyolab.com/communityweb/business/nap.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2025/12/29/b63ce4c90a203ea011316c8606b0bb07_2677179333313553074.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/06/16/350f75fa0e00eefcc447b985bd4f0882_7751891925154273978.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "绝区零",
             "bg_color": "#F5F6FB",
             "focus_channel_id": "46"
@@ -27,9 +27,9 @@
         {
             "id": "1",
             "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/04/24/a27d6bb13beafb7fbb42709512e83cf8_4035830369456005808.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2025/12/31/a3b64a968510e5d63fee9ce15481a25c_422324353273415637.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/07/14/8eae2e2c0bf340ff60fbb5a1a0d3459f_6976782668890780946.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "Honkai Impact 3rd",
-            "bg_color": "#292180",
+            "bg_color": "#1B3A7A",
             "focus_channel_id": "34"
         },
         {
@@ -41,20 +41,20 @@
             "focus_channel_id": "38"
         },
         {
+            "id": "9",
+            "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2026/06/22/5095f59b1457997c7166a22a89a60a7d_4719883413651054051.png",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/06/18/bb9cce023ea6cfb35705443dd9fa91e7_9078424634948306761.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
+            "name": "崩坏：因缘精灵",
+            "bg_color": "#FFFFFF",
+            "focus_channel_id": "90001"
+        },
+        {
             "id": "10",
             "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/09/24/aada3336beaad91e73997f6648a80e54_8862525620124846948.png",
             "bg": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/09/24/719d1624da6ad8acee27b50f2cbf45d1_114691005128480559.jpg",
             "name": "Petit Planet",
             "bg_color": "#0d1933",
             "focus_channel_id": "100001"
-        },
-        {
-            "id": "9",
-            "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/08/28/f8162b4e119b78cd7a67ef5c64b830c6_9217397143028229513.png",
-            "bg": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/08/28/130e5ccef973a6d13f8ae5bc17997d8e_3170336049197988640.png",
-            "name": "崩坏：因缘精灵",
-            "bg_color": "#2fc8b5",
-            "focus_channel_id": "90001"
         },
         {
             "id": "5",
