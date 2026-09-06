@@ -3,23 +3,23 @@
         {
             "id": "2",
             "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2023/11/08/9db76fb146f82c045bc276956f86e047_6878380451593228482.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/07/01/71a91345525e0b8a501e7870b6c4e7fa_449896914667580399.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/08/12/6c827a41d98c46a47ac189f8a6fdd2f7_8686412433414372578.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "原神",
-            "bg_color": "#022E66",
+            "bg_color": "#124382",
             "focus_channel_id": "30"
         },
         {
             "id": "6",
             "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/09/24/de09aa694c26b87448cf03af683e3109_6737621355140099473.jpg",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/07/01/c95840183a47c90fe6cabdad3be71e9b_8774841947772697962.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/08/20/2ce5c45196e566821c87273c31282eca_3666107575805844038.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "崩坏：星穹铁道",
-            "bg_color": "#16161C",
+            "bg_color": "#5ABDFF",
             "focus_channel_id": "42"
         },
         {
             "id": "8",
-            "icon": "https://hyl-static-res-prod.hoyolab.com/communityweb/business/nap.png",
-            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/06/16/350f75fa0e00eefcc447b985bd4f0882_7751891925154273978.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
+            "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2026/07/29/a3c630a3d049296164826a6002f635af_4233388162613091203.png",
+            "bg": "https://upload-os-bbs.hoyolab.com/upload/2026/07/28/5d7822e5afa8b505f3de966c71e26256_4699247435760738210.jpg?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70",
             "name": "绝区零",
             "bg_color": "#F5F6FB",
             "focus_channel_id": "46"
@@ -52,7 +52,7 @@
             "id": "10",
             "icon": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/09/24/aada3336beaad91e73997f6648a80e54_8862525620124846948.png",
             "bg": "https://fastcdn.hoyoverse.com/static-resource-v2/2025/09/24/719d1624da6ad8acee27b50f2cbf45d1_114691005128480559.jpg",
-            "name": "Petit Planet",
+            "name": "星布谷地",
             "bg_color": "#0d1933",
             "focus_channel_id": "100001"
         },
